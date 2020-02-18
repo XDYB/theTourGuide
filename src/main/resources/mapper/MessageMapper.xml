@@ -10,13 +10,5 @@
     <result column="message" jdbcType="VARCHAR" property="message" />
     <result column="state" jdbcType="TINYINT" property="state" />
   </resultMap>
-  <resultMap id="BaseResultMap" type="com.ysq.theTourGuide.entity.Message">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <result column="message_id" jdbcType="INTEGER" property="messageId" />
-    <result column="message" jdbcType="VARCHAR" property="message" />
-    <result column="tz_id" jdbcType="INTEGER" property="tzId" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-  </resultMap>
+  
 </mapper>
