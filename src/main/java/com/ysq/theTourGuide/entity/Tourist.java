@@ -1,14 +1,20 @@
 package com.ysq.theTourGuide.entity;
 
-import javax.persistence.*;
+import com.ysq.theTourGuide.dto.UserInfo;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Tourist {
-    private Long id;
-
+    @Id
     @Column(name = "open_id")
-    private Integer openId;
+    private Long openId;
 
     /**
      * 昵称
@@ -58,8 +64,6 @@ public class Tourist {
     @Column(name = "is_guide")
     private Boolean isGuide;
 
-    public static final String ID = "id";
-
     public static final String OPEN_ID = "openId";
 
     public static final String NICKNAME = "nickname";
@@ -79,4 +83,14 @@ public class Tourist {
     public static final String IS_VIP = "isVip";
 
     public static final String IS_GUIDE = "isGuide";
+
+    public Tourist(UserInfo userInfo){
+        this.openId = userInfo.getOpenId();
+        this.nickname = userInfo.getNickName();
+        this.avatarUrl = userInfo.getAvatarUrl();
+        this.gender = userInfo.getGender();
+        this.province = userInfo.getProvince();
+        this.city = userInfo.getCity();
+        this.country = userInfo.getCountry();
+    }
 }

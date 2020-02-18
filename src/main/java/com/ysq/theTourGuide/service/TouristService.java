@@ -4,4 +4,5 @@ import com.ysq.theTourGuide.base.service.BaseService;
 import com.ysq.theTourGuide.entity.Tourist;
 
 public interface TouristService extends BaseService<Tourist> {
+
 }

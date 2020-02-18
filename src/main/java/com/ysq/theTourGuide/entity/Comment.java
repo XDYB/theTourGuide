@@ -1,11 +1,18 @@
 package com.ysq.theTourGuide.entity;
 
-import java.util.Date;
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.util.Date;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Comment {
+    @Id
     private Long id;
 
     /**
@@ -54,4 +61,8 @@ public class Comment {
     public static final String CREATETIME = "createtime";
 
     public static final String STATE = "state";
+
+    public Comment(Long videoId){
+        this.videoId = videoId;
+    }
 }

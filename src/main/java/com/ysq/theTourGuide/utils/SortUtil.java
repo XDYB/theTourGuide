@@ -1,8 +1,6 @@
 package com.ysq.theTourGuide.utils;
 
-import com.ysq.theTourGuide.dto.VideoDistanceDTO;
-import com.ysq.theTourGuide.dto.VideoGuideLevelDTO;
-import com.ysq.theTourGuide.entity.Video;
+import com.ysq.theTourGuide.dto.VideoDTO;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,11 +19,11 @@ public class SortUtil {
      * @param orderBy ASC为正序，DESC为倒序
      * @return
      */
-    public static List<Video> sortVideoByLikeNums(List<Video> list,String orderBy){
+    public static List<VideoDTO> sortVideoByLikeNums(List<VideoDTO> list,String orderBy){
         if(orderBy == "ASC") {
             Collections.sort(list,
 //                    (o1,o2) -> o1.getLikeNums() - o2.getLikeNums() 等同于以下语句
-                    Comparator.comparingInt(Video::getLikeNums)
+                    Comparator.comparingInt(VideoDTO::getLikeNums)
             );
             return list;
         }else if(orderBy == "DESC"){
@@ -42,15 +40,15 @@ public class SortUtil {
      * @param orderBy ASC为正序，DESC为倒序
      * @return
      */
-    public static List<VideoGuideLevelDTO> sortByGuideLevel(List<VideoGuideLevelDTO> list, String orderBy){
+    public static List<VideoDTO> sortByGuideLevel(List<VideoDTO> list, String orderBy){
         if(orderBy == "ASC"){
             Collections.sort(list,
 //                    (o1, o2) -> o1.getGuideLevel() - o2.getGuideLevel()
-                    Comparator.comparingInt(VideoGuideLevelDTO::getGuideLevel)
+                    Comparator.comparingInt(VideoDTO::getGuide_level)
             );
             return list;
         }else if(orderBy == "DESC"){
-            Collections.sort(list, (o1,o2) -> o2.getGuideLevel() - o1.getGuideLevel());
+            Collections.sort(list, (o1,o2) -> o2.getGuide_level() - o1.getGuide_level());
             return list;
         }else {
             return null;
@@ -64,15 +62,15 @@ public class SortUtil {
      * @param orderBy ASC为正序，DESC为倒序
      * @return
      */
-    public static List<VideoDistanceDTO> sortByDistance(List<VideoDistanceDTO> list,String orderBy){
+    public static List<VideoDTO> sortByDistance(List<VideoDTO> list, String orderBy){
         if(orderBy == "ASC"){
             Collections.sort(list,
 //                    (o1, o2) -> o1.getDistance() - o2.getDistance()
-                    Comparator.comparingInt(VideoDistanceDTO::getDistance)
+                    Comparator.comparingDouble(VideoDTO::getDistance)
             );
             return list;
         }else if(orderBy == "DESC"){
-            Collections.sort(list, (o1,o2) -> o2.getDistance() - o1.getDistance());
+            Collections.sort(list, (o1,o2) -> (int)(Math.round(o2.getDistance()) - Math.round(o1.getDistance())));
             return list;
         }else {
             return null;

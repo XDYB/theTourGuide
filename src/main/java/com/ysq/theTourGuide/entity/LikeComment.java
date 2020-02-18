@@ -9,37 +9,27 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Data
-@Table(name = "like_video")
-@NoArgsConstructor
+@Table(name = "like_comment")
 @AllArgsConstructor
-public class LikeVideo {
+@NoArgsConstructor
+public class LikeComment {
     @Id
     private Long id;
 
-    /**
-     * 导游id
-     */
     @Column(name = "tourist_id")
     private Long touristId;
 
-    /**
-     * 喜欢的视频id
-     */
-    @Column(name = "like_video_id")
-    private Long likeVideoId;
+    @Column(name = "comment_id")
+    private Long commentId;
 
     public static final String ID = "id";
 
     public static final String TOURIST_ID = "touristId";
 
-    public static final String LIKE_VIDEO_ID = "likeVideoId";
+    public static final String COMMENT_ID = "commentId";
 
-    public LikeVideo(Long videoId, Long touristId){
-        this.likeVideoId = videoId;
+    public LikeComment(Long touristId,Long commentId){
         this.touristId = touristId;
-    }
-
-    public LikeVideo(Long videoId){
-        this.likeVideoId = videoId;
+        this.commentId = commentId;
     }
 }

@@ -1,11 +1,18 @@
 package com.ysq.theTourGuide.entity;
 
-import java.util.Date;
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.util.Date;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Guide {
+    @Id
     private Long id;
 
     /**
@@ -112,4 +119,8 @@ public class Guide {
     public static final String FANS_NUMS = "fansNums";
 
     public static final String STATE = "state";
+
+    public Guide(Long touristId){
+        this.touristId = touristId;
+    }
 }

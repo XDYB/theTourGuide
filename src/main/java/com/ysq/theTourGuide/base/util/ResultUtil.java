@@ -2,6 +2,7 @@ package com.ysq.theTourGuide.base.util;
 
 
 import com.ysq.theTourGuide.base.dto.ResultDTO;
+import com.ysq.theTourGuide.config.ErrorCode;
 
 /**
  * @author ReMidDream
@@ -21,10 +22,10 @@ public class ResultUtil {
         return Success(null);
     }
 
-    public static ResultDTO Error(String code, String msg){
+    public static ResultDTO Error(ErrorCode errorCode){
         ResultDTO resultDto = new ResultDTO();
-        resultDto.setMsg(msg);
-        resultDto.setCode(code);
+        resultDto.setMsg(errorCode.getMsg());
+        resultDto.setCode(errorCode.getCode());
         return resultDto;
     }
 }

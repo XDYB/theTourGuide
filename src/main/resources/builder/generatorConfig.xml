@@ -28,15 +28,18 @@
         <javaClientGenerator targetPackage="${targetMapperPackage}" targetProject="${targetJavaProject}"
                              type="XMLMAPPER"/>
 
-        <table tableName="fans"/>
-        <table tableName="tourist"/>
-        <table tableName="guide"/>
-        <table tableName="video"/>
-        <table tableName="like_video"/>
-        <table tableName="order"/>
-        <table tableName="scenic"/>
-        <table tableName="comment"/>
-        <table tableName="scenic_spot"/>
+<!--        <table tableName="fans"/>-->
+<!--        <table tableName="tourist"/>-->
+<!--        <table tableName="guide"/>-->
+<!--        <table tableName="video"/>-->
+<!--        <table tableName="like_video"/>-->
+<!--        <table tableName="order"/>-->
+<!--        <table tableName="route"/>-->
+<!--        <table tableName="scenic"/>-->
+<!--        <table tableName="comment"/>-->
+<!--        <table tableName="scenic_spot"/>-->
+<!--        <table tableName="like_comment"/>-->
+        <table tableName="message"/>
 
     </context>
 </generatorConfiguration>

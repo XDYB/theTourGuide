@@ -3,16 +3,14 @@ package com.ysq.theTourGuide.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.ysq.theTourGuide.dto.VideoDistanceDTO;
-import com.ysq.theTourGuide.dto.VideoGuideLevelDTO;
 import com.ysq.theTourGuide.base.dto.ResultDTO;
 import com.ysq.theTourGuide.base.util.ResultUtil;
+import com.ysq.theTourGuide.config.ErrorCode;
+import com.ysq.theTourGuide.config.OrderState;
 import com.ysq.theTourGuide.config.RecommendAttrs;
-import com.ysq.theTourGuide.entity.Scenic;
-import com.ysq.theTourGuide.entity.Video;
-import com.ysq.theTourGuide.service.GuideService;
-import com.ysq.theTourGuide.service.ScenicService;
-import com.ysq.theTourGuide.service.VideoService;
+import com.ysq.theTourGuide.dto.*;
+import com.ysq.theTourGuide.entity.*;
+import com.ysq.theTourGuide.service.*;
 import com.ysq.theTourGuide.service.redis.IGeoService;
 import com.ysq.theTourGuide.service.redis.RedisService;
 import com.ysq.theTourGuide.utils.HttpClientUtil;
@@ -23,25 +21,30 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.geo.Point;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
 public class TouristController {
 
 
-    @Value("${app.appid")
+    @Value("${app.appid}")
     private String appid;
 
-    @Value("${app.appSecret")
+    @Value("${app.appSecret}")
     private String appSecret;
 
-    @Value("${app.appTimeOut")
+    @Value("${app.appTimeOut}")
     private long appTimeOut;
 
 
+    @Autowired
+    TouristService touristService;
     @Autowired
     VideoService videoService;
 
@@ -57,10 +60,25 @@ public class TouristController {
     @Autowired
     ScenicService scenicService;
 
-    @PostMapping("/login")
+    @Autowired
+    OrderService orderService;
+
+    @Autowired
+    LikeVideoService likeVideoService;
+
+    @Autowired
+    CommentService commentService;
+
+    @Autowired
+    LikeCommentService likeCommentService;
+
+    @Autowired
+    MessageService messageService;
+
+//    @PostMapping("/login")
     public ResultDTO login(String encryptedData, String iv, String code){
         if(!StringUtils.isNotBlank(code)){
-            return ResultUtil.Error("202","未获取到用户凭证code");
+            return ResultUtil.Error(ErrorCode.INVALID_PARAMETERS);
         }
         String apiUrl="https://api.weixin.qq.com/sns/jscode2session?appid="+appid+"&secret="+appSecret+"&js_code="+code+"&grant_type=authorization_code";
         System.out.println(apiUrl);
@@ -94,13 +112,54 @@ public class TouristController {
 //                redisTemplate.expire(uuid,appTimeOut, TimeUnit.SECONDS);
                 return ResultUtil.Success(dataMap);
             }else{
-                return ResultUtil.Error("202","解密失败");
+                return ResultUtil.Error(ErrorCode.UNKNOWERROR);
             }
         }else{
-            return ResultUtil.Error("202","未获取到用户openid 或 session");
+            return ResultUtil.Error(ErrorCode.UNKNOWERROR);
         }
 
 
+    }
+
+    /**
+     * 登录接口返回openid 以及 session_key
+     * @param code
+     * @return
+     */
+    @PostMapping("/login")
+    public ResultDTO login(String code,HttpServletRequest request){
+        if(!StringUtils.isNotBlank(code)){
+            return ResultUtil.Error(ErrorCode.UNKNOWERROR);
+        }
+        String apiUrl="https://api.weixin.qq.com/sns/jscode2session?appid="+appid+"&secret="+appSecret+"&js_code="+code+"&grant_type=authorization_code";
+        System.out.println(apiUrl);
+        String responseBody = HttpClientUtil.doGet(apiUrl);
+        System.out.println(responseBody);
+        JSONObject jsonObject = JSON.parseObject(responseBody);
+        request.getSession().setAttribute("touristId",jsonObject.getString("open_id"));
+        return ResultUtil.Success(jsonObject);
+    }
+
+    /**
+     * 提交用户信息，若已存在则对比信息是否一致，否则更新数据库
+     * @param userInfo
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/saveUserInfo")
+    public ResultDTO saveUserInfo(UserInfo userInfo)throws Exception{
+        Tourist tourist = touristService.get(userInfo.getOpenId());
+        System.out.println(tourist.toString());
+        if(tourist!=null){
+            if(!userInfo.equals(new UserInfo(tourist))){
+                touristService.update(new Tourist(userInfo));
+                return ResultUtil.Success();
+            }
+        }else{
+            return ResultUtil.Success(touristService.save(new Tourist(userInfo)));
+        }
+
+        return ResultUtil.Error(ErrorCode.UNKNOWERROR);
     }
 
     /**
@@ -110,37 +169,157 @@ public class TouristController {
      * @throws Exception
      */
     @PostMapping("/recommend")
-    public ResultDTO recommend(String attr,double longitude,double latitude)throws Exception{
+    public ResultDTO recommend(String attr,double longitude,double latitude,HttpServletRequest request)throws Exception{
         List<Video> videoList = videoService.findAll();
+        Long touristId = (Long) request.getSession().getAttribute("touristId");
+        List<VideoDTO> videoDTOS = new ArrayList<>();
+        for(Video v:videoList){
+            Scenic scenic = scenicService.get(v.getScenicId());
+            Guide guide = guideService.get(v.getGuideId());
+            Tourist tourist = touristService.get(guide.getTouristId());
+            boolean isLike = likeVideoService.findByParams(new LikeVideo(v.getId(),touristId)).size()==0 ? false : true;
+            Integer comment_counts = commentService.findByParams(new Comment(v.getId())).size();
+            videoDTOS.add(new VideoDTO(v,
+                    MyMathUtil.getTwoPointDist(
+                            new Point(longitude,latitude),
+                            new Point(scenic.getLongitude(),scenic.getLatitude())),
+                    tourist.getAvatarUrl(),
+                    guide.getLevel(),
+                    isLike,
+                    comment_counts,
+                    v.getLikeNums()
+            ));
+        }
         if(attr== RecommendAttrs.DIS.getAttr()){
-            List<VideoDistanceDTO> videoDistanceDTOS = new ArrayList<>();
-            for(Video v:videoList){
-                Scenic scenic = scenicService.get(v.getScenicId());
-                videoDistanceDTOS.add(new VideoDistanceDTO(v,
-                        MyMathUtil.getTwoPointDist(
-                                new Point(longitude,latitude),
-                                new Point(scenic.getLongitude(),scenic.getLatitude())
-                        )
-                ));
-            }
-            return ResultUtil.Success(videoDistanceDTOS);
+            return ResultUtil.Success(SortUtil.sortByDistance(videoDTOS,"ASC"));
         }else if(attr == RecommendAttrs.LEV.getAttr()){
-            List<VideoGuideLevelDTO> videoGuideLevelDTOS = new ArrayList<>();
-            for(Video v:videoList){
-                videoGuideLevelDTOS.add(new VideoGuideLevelDTO(v,guideService.get(v.getGuideId()).getLevel()));
-            }
-            SortUtil.sortByGuideLevel(videoGuideLevelDTOS,"ASC");
-            return ResultUtil.Success(videoGuideLevelDTOS);
+            return ResultUtil.Success(SortUtil.sortByGuideLevel(videoDTOS,"ASC"));
         }else if(attr == RecommendAttrs.GN.getAttr()){
-            SortUtil.sortVideoByLikeNums(videoList,"ASC");
-            return ResultUtil.Success(videoList);
+            return ResultUtil.Success(SortUtil.sortVideoByLikeNums(videoDTOS,"ASC"));
         }else{
-            return ResultUtil.Error("202","不正确的参数attr");
+            return ResultUtil.Error(ErrorCode.INVALID_PARAMETERS);
         }
 
 
     }
 
+
+    /**
+     * 预约订单
+     * @param orderDTO
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/booking")
+    public ResultDTO booking(OrderDTO orderDTO, HttpServletRequest request)throws Exception{
+        orderDTO.setTouristId((Long)request.getSession().getAttribute("touristId"));
+        return ResultUtil.Success(orderService.saveDTO(orderDTO, Order.class));
+    }
+
+    /**
+     * 取消订单
+     * @param orderId
+     * @return
+     * @throws Exception
+     */
+    @DeleteMapping("/cancelOrder")
+    public ResultDTO cancelOrder(Long orderId)throws Exception{
+        if(orderService.get(orderId)!=null) {
+            orderService.update(new Order(OrderState.CANCEL.getState()));
+            return ResultUtil.Success();
+        }else{
+            return ResultUtil.Error(ErrorCode.NOEXIST);
+        }
+    }
+
+    /**
+     * 完成订单
+     * @param orderId
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/finishOrder")
+    public ResultDTO finishOrder(Long orderId)throws Exception{
+        orderService.update(new Order(OrderState.FINISH.getState()));
+        return ResultUtil.Success();
+    }
+
+    /**
+     * 给视频点赞
+     * @param videoId
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/likeVideo")
+    public ResultDTO likeVideo(Long videoId,HttpServletRequest request)throws Exception{
+        Long touristId = (Long)request.getSession().getAttribute("touristId");
+        if(likeVideoService.findByParams(new LikeVideo(videoId)).size()==0){
+            return ResultUtil.Success(likeVideoService.save(new LikeVideo(videoId,touristId)));
+        }else {
+            return ResultUtil.Error(ErrorCode.ISEXIST);
+        }
+
+    }
+
+    /**
+     * 发表评论
+     * @param comment
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/comment")
+    public ResultDTO comment(Comment comment)throws Exception{
+        return ResultUtil.Success(commentService.save(comment));
+    }
+
+    /**
+     * 获取评论
+     * @param videoId
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getComments")
+    public ResultDTO getComments(Long videoId,HttpServletRequest request)throws Exception{
+        List<CommentDTO> commentDTOS = new ArrayList<>();
+        Long touristId = (Long) request.getSession().getAttribute("touristId");
+        for(Comment c:commentService.findAll()){
+            Tourist tourist = touristService.get(c.getTouristId());
+            boolean isLike = likeCommentService.findByParams(new LikeComment(touristId,c.getId())).size()==0 ? false : true;
+            commentDTOS.add(new CommentDTO(tourist.getAvatarUrl(),
+                    tourist.getNickname(),
+                    c.getContent(),
+                    c.getCreatetime(),
+                    isLike)
+            );
+        }
+        return ResultUtil.Success(commentDTOS);
+    }
+
+    @GetMapping("/getHisVideo")
+    public ResultDTO getHisVideo(Long guideId)throws Exception{
+        return ResultUtil.Success(videoService.findByParams(new Video(guideId)));
+    }
+
+    @GetMapping("/getHisLike")
+    public ResultDTO getHisLike(Long guideId)throws Exception{
+        Long touristId = guideService.get(guideId).getTouristId();
+        LikeVideo likeVideo = new LikeVideo();
+        likeVideo.setTouristId(touristId);
+        List<Video> videoList = new ArrayList<>();
+        for(LikeVideo l:likeVideoService.findByParams(likeVideo)){
+            videoList.add(videoService.get(l.getLikeVideoId()));
+        }
+        return ResultUtil.Success(videoList);
+    }
+
+
+    @GetMapping("/getMsg")
+    public ResultDTO getMsg(HttpServletRequest request)throws Exception{
+        return ResultUtil.Success(messageService.findByParams(new Message((Long)request.getSession().getAttribute("touristId"))));
+    }
 //    @GetMapping("redis")
 //    public ResultDTO redis(){
 ////        CityGeoKey cityGeoKey = new CityGeoKey();

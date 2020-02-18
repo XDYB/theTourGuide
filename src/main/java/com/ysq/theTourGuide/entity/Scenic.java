@@ -1,10 +1,12 @@
 package com.ysq.theTourGuide.entity;
 
-import javax.persistence.*;
 import lombok.Data;
+
+import javax.persistence.Id;
 
 @Data
 public class Scenic {
+    @Id
     private Long id;
 
     /**

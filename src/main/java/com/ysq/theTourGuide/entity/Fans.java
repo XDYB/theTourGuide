@@ -1,10 +1,13 @@
 package com.ysq.theTourGuide.entity;
 
-import javax.persistence.*;
 import lombok.Data;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
 
 @Data
 public class Fans {
+    @Id
     private Long id;
 
     /**

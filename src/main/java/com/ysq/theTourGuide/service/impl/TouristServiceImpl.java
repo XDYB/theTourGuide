@@ -8,4 +8,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TouristServiceImpl extends BaseServiceImpl<TouristMapper, Tourist> implements TouristService {
+
 }

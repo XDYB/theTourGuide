@@ -5,8 +5,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <result column="id" property="id" jdbcType="BIGINT" />
-    <result column="open_id" property="openId" jdbcType="INTEGER" />
+    <result column="open_id" property="openId" jdbcType="BIGINT" />
     <result column="nickname" property="nickname" jdbcType="VARCHAR" />
     <result column="gender" property="gender" jdbcType="VARCHAR" />
     <result column="avatar_url" property="avatarUrl" jdbcType="VARCHAR" />
@@ -17,4 +16,5 @@
     <result column="is_VIP" property="isVip" jdbcType="BIT" />
     <result column="is_guide" property="isGuide" jdbcType="BIT" />
   </resultMap>
+
 </mapper>

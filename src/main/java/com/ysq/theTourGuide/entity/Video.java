@@ -1,10 +1,17 @@
 package com.ysq.theTourGuide.entity;
 
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Video {
+    @Id
     private Long id;
 
     /**
@@ -40,4 +47,8 @@ public class Video {
     public static final String VIDEO_URL = "videoUrl";
 
     public static final String LIKE_NUMS = "likeNums";
+
+    public Video(Long guideId){
+        this.guideId = guideId;
+    }
 }

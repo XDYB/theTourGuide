@@ -1,10 +1,18 @@
 package com.ysq.theTourGuide.entity;
 
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.util.Date;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Order {
+    @Id
     private Long id;
 
     /**
@@ -44,12 +52,28 @@ public class Order {
      * 碰面时间
      */
     @Column(name = "meet_time")
-    private String meetTime;
+    private Date meetTime;
 
     /**
      * 订单状态（222为待出行，111为已完成，333为取消）
      */
     private String state;
+
+    /**
+     * 姓名
+     */
+    private String name;
+
+    /**
+     * 身份证号
+     */
+    @Column(name = "ID_number")
+    private String idNumber;
+
+    /**
+     * 电话
+     */
+    private String phone;
 
     public static final String ID = "id";
 
@@ -68,4 +92,18 @@ public class Order {
     public static final String MEET_TIME = "meetTime";
 
     public static final String STATE = "state";
+
+    public static final String NAME = "name";
+
+    public static final String ID_NUMBER = "idNumber";
+
+    public static final String PHONE = "phone";
+
+    public Order(String state){
+        this.state = state;
+    }
+
+    public Order(Long guideId){
+        this.guideId = guideId;
+    }
 }
