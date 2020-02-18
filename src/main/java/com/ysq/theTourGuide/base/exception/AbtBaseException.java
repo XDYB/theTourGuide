@@ -44,7 +44,7 @@ public class AbtBaseException extends RuntimeException {
             return ResultUtil.Error(ErrorCode.UNKNOWERROR);
         }
         log.error("error", exception);
-        return ResultUtil.Error(ErrorCode.UNKNOWERROR);
+        return ResultUtil.Error(ErrorCode.NOEXIST);
     }
 
     public String getCode() {

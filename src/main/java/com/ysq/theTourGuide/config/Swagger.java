@@ -26,7 +26,7 @@ public class Swagger {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.chuangshu.livable.control"))
+                .apis(RequestHandlerSelectors.basePackage("com.ysq.theTourGuide.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
