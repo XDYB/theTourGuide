@@ -36,4 +36,14 @@ public class Message {
         this.touristId = touristId;
         this.state = 0;
     }
+
+    public Message(Long touristId,String message){
+        this.touristId = touristId;
+        this.message = message;
+    }
+
+    public Message(Long id,Byte state){
+        this.id = id;
+        this.state = state;
+    }
 }

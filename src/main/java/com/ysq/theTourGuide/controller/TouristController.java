@@ -213,7 +213,9 @@ public class TouristController {
      */
     @PostMapping("/booking")
     public ResultDTO booking(OrderDTO orderDTO, HttpServletRequest request)throws Exception{
-        orderDTO.setTouristId((Long)request.getSession().getAttribute("touristId"));
+        Long touristId = (Long)request.getSession().getAttribute("touristId");
+        orderDTO.setTouristId(touristId);
+        messageService.save(new Message(touristId,"预约成功"));
         return ResultUtil.Success(orderService.saveDTO(orderDTO, Order.class));
     }
 
@@ -298,11 +300,23 @@ public class TouristController {
         return ResultUtil.Success(commentDTOS);
     }
 
+    /**
+     * 获取他的视频
+     * @param guideId
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/getHisVideo")
     public ResultDTO getHisVideo(Long guideId)throws Exception{
         return ResultUtil.Success(videoService.findByParams(new Video(guideId)));
     }
 
+    /**
+     * 获取它的喜欢
+     * @param guideId
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/getHisLike")
     public ResultDTO getHisLike(Long guideId)throws Exception{
         Long touristId = guideService.get(guideId).getTouristId();
@@ -316,63 +330,38 @@ public class TouristController {
     }
 
 
-    @GetMapping("/getMsg")
-    public ResultDTO getMsg(HttpServletRequest request)throws Exception{
-        return ResultUtil.Success(messageService.findByParams(new Message((Long)request.getSession().getAttribute("touristId"))));
+
+
+    /**
+     * 获取他的未查阅的消息数量
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getMsgNums")
+    public ResultDTO getMsgNums(HttpServletRequest request)throws Exception{
+        return ResultUtil.Success(messageService.countAll(new Message((Long)request.getSession().getAttribute("touristId"))));
     }
-//    @GetMapping("redis")
-//    public ResultDTO redis(){
-////        CityGeoKey cityGeoKey = new CityGeoKey();
-////        System.out.println(redisService.geoAdd(cityGeoKey,new Point(116.405285,39.904989),"北京"));
-////        System.out.println(redisService.geoPos(cityGeoKey, "北京"));
-////        System.out.println(redisService.geoAdd(cityGeoKey,new Point(121.472644,31.231706),"上海"));
-////        System.out.println(redisService.geoPos(cityGeoKey, "上海"));
-////        Metric metric = Metrics.KILOMETERS;
-////        System.out.println(redisService.geoDist(cityGeoKey, "北京", "上海",metric));
-////        redisService.geoRadius(cityGeoKey, new Point(115.405285, 39.904989), new Distance(1550, metric));
-//        List<Location> locations = new ArrayList<>();
+
+    /**
+     * 获取他的消息
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getMsgs")
+    public ResultDTO getMsgs(HttpServletRequest request)throws Exception{
+        Message message = new Message();
+        message.setTouristId((Long)request.getSession().getAttribute("touristId"));
+        return ResultUtil.Success(messageService.findByParams(message));
+    }
+
+    @GetMapping("/getMsg")
+    public ResultDTO getMsg(Long messageId)throws Exception{
+        Message message = messageService.get(messageId);
+        byte t = 1;
+        messageService.update(new Message(messageId,t));
+        return ResultUtil.Success(message);
+    }
 //
-//        locations.add(new Location("hefei", 117.17, 31.52));
-//        locations.add(new Location("anqing", 117.02, 30.31));
-//        locations.add(new Location("huaibei", 116.47, 33.57));
-//        locations.add(new Location("suzhou", 116.58, 33.38));
-//        locations.add(new Location("fuyang", 115.48, 32.54));
-//        locations.add(new Location("bengbu", 117.21, 32.56));
-//        locations.add(new Location("huangshan", 118.18, 29.43));
-//
-////        System.out.println(geoService.saveLocationToRedis(locations));
-//
-//        System.out.println(JSON.toJSONString(geoService.getLocationPos(
-//                Arrays.asList("anqing", "suzhou", "xxx").toArray(new String[3])
-//        )));
-//
-//        System.out.println(geoService.getTwoLocationDistance("anqing", "suzhou", null).getValue());
-//        System.out.println(geoService.getTwoLocationDistance("anqing", "suzhou", Metrics.KILOMETERS).getValue());
-//
-//
-//        Point center = new Point(locations.get(0).getLongitude(), locations.get(0).getLatitude());
-//        Distance radius = new Distance(200, Metrics.KILOMETERS);
-//        Circle within = new Circle(center, radius);
-//
-//        System.out.println(JSON.toJSONString(geoService.getPointRadius(within, null)));
-//
-//        // order by 距离 limit 2, 同时返回距离中心点的距离
-//        RedisGeoCommands.GeoRadiusCommandArgs args =
-//                RedisGeoCommands.GeoRadiusCommandArgs.newGeoRadiusArgs().includeDistance().limit(2).sortAscending();
-//        System.out.println(JSON.toJSONString(geoService.getPointRadius(within, args)));
-//
-//
-//        Distance radius1 = new Distance(200, Metrics.KILOMETERS);
-//        System.out.println(JSON.toJSONString(geoService.getMemberRadius("suzhou", radius1, null)));
-//
-//        // order by 距离 limit 2, 同时返回距离中心点的距离
-//        RedisGeoCommands.GeoRadiusCommandArgs args1 =
-//                RedisGeoCommands.GeoRadiusCommandArgs.newGeoRadiusArgs().includeDistance().limit(2).sortAscending();
-//        System.out.println(JSON.toJSONString(geoService.getMemberRadius("suzhou", radius1, args1)));
-//
-//        System.out.println(JSON.toJSONString(geoService.getLocationGeoHash(
-//                Arrays.asList("anqing", "suzhou", "xxx").toArray(new String[3])
-//        )));
-//        return ResultUtil.Success();
-//    }
 }

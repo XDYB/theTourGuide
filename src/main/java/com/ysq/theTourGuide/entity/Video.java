@@ -21,6 +21,13 @@ public class Video {
     private Long guideId;
 
     /**
+     * 路线id
+     */
+    @Column(name = "route_id")
+    private Long routeId;
+
+
+    /**
      * 景区id
      */
     @Column(name = "scenic_id")

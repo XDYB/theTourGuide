@@ -47,7 +47,7 @@ public class GuideController {
      * @param route
      * @return
      */
-    @PostMapping("/postMsg")
+    @PostMapping("/postRoute")
     public ResultDTO postMsg(Route route, HttpServletRequest request)throws Exception{
         Long guideId = guideService.findByParams(new Guide((Long)request.getSession().getAttribute("touristId"))).get(0).getId();
         route.setGuideId(guideId);
@@ -55,9 +55,10 @@ public class GuideController {
     }
 
     @PostMapping("/postVideo")
-    public ResultDTO postVideo(Video video,HttpServletRequest request)throws Exception{
+    public ResultDTO postVideo(Video video,Long routeId,HttpServletRequest request)throws Exception{
         Long guideId = guideService.findByParams(new Guide((Long)request.getSession().getAttribute("touristId"))).get(0).getId();
         video.setGuideId(guideId);
+        video.setRouteId(routeId);
         return ResultUtil.Success(videoService.save(video));
     }
 

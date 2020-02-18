@@ -7,6 +7,7 @@
     -->
     <result column="id" property="id" jdbcType="BIGINT" />
     <result column="guide_id" property="guideId" jdbcType="BIGINT" />
+    <result column="route_id" property="routeId" jdbcType="BIGINT" />
     <result column="scenic_id" property="scenicId" jdbcType="BIGINT" />
     <result column="video_url" property="videoUrl" jdbcType="VARCHAR" />
     <result column="like_nums" property="likeNums" jdbcType="INTEGER" />
