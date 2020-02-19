@@ -22,6 +22,9 @@ import java.util.List;
 public class GuideController {
 
     @Autowired
+    TouristService touristService;
+
+    @Autowired
     GuideService guideService;
 
     @Autowired
@@ -53,7 +56,11 @@ public class GuideController {
             @ApiImplicitParam(value = "所属组织",name = "organization",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "期限",name = "date",dataType = "String",paramType = "query"),
     })
-    public ResultDTO toBeAGuide(GuideResiterDTO guide) throws Exception{
+    public ResultDTO toBeAGuide(GuideResiterDTO guide,HttpServletRequest request) throws Exception{
+        Tourist tourist = new Tourist();
+        tourist.setId((Long)request.getSession().getAttribute("touristId"));
+        tourist.setIsGuide(true);
+        touristService.update(tourist);
         return ResultUtil.Success(guideService.saveDTO(guide, Guide.class));
     }
 
