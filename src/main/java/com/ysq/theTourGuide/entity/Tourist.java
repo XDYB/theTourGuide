@@ -98,4 +98,8 @@ public class Tourist {
         this.isGuide = false;
         this.isVip = false;
     }
+
+    public Tourist(String openId){
+        this.openId = openId;
+    }
 }

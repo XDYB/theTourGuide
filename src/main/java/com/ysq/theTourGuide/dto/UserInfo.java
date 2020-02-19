@@ -32,26 +32,33 @@ public class UserInfo {
     @Override
     public boolean equals(Object obj) {
         if(obj == null){
+            System.out.println(1);
             return false;
         }
         if(this == obj){
+            System.out.println(2);
             return true;
         }
 
         if(obj instanceof UserInfo){
             UserInfo userInfo = (UserInfo)obj;
-            if(userInfo.openId == this.openId &&
-                    userInfo.nickName == this.nickName &&
-                    userInfo.avatarUrl == this.avatarUrl &&
-                    userInfo.province == this.province &&
-                    userInfo.city == this.city &&
-                    userInfo.country == this.country &&
-                    userInfo.gender == this.gender){
+            System.out.println(userInfo.toString());
+            System.out.println(this.country);
+            if(userInfo.openId .equals(this.openId)  &&
+                    userInfo.nickName.equals(this.nickName) &&
+                    userInfo.avatarUrl.equals(this.avatarUrl)  &&
+                    userInfo.province.equals(this.province)  &&
+                    userInfo.city.equals( this.city) &&
+                    userInfo.country.equals(this.country)  &&
+                    userInfo.gender.equals(this.gender) ){
+                System.out.println(3);
                 return true;
             }else {
+                System.out.println(4);
                 return false;
             }
         }
+        System.out.println(5);
         return false;
     }
 }

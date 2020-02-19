@@ -153,7 +153,7 @@ public class TouristController {
     @PostMapping("/saveUserInfo")
     @ApiOperation("提交用户信息，若已存在则对比信息是否一致，否则更新数据库")
     public ResultDTO saveUserInfo(UserInfo userInfo,HttpServletRequest request)throws Exception{
-        List<Tourist> touristList = touristService.findByParams(new Tourist(userInfo));
+        List<Tourist> touristList = touristService.findByParams(new Tourist(userInfo.getOpenId()));
         if(touristList.size() == 0){
             Tourist save = touristService.save(new Tourist(userInfo));
             request.getSession().setAttribute("touristId",save.getId());
@@ -164,11 +164,11 @@ public class TouristController {
             if(!userInfo.equals(new UserInfo(tourist))){
                 touristService.update(new Tourist(userInfo));
                 return ResultUtil.Success();
+            }else{
+                return ResultUtil.Success();
             }
         }
 
-
-        return ResultUtil.Error(ErrorCode.UNKNOWERROR);
     }
 
     /**
@@ -181,11 +181,11 @@ public class TouristController {
     @ApiOperation("根据参数排序视频给用户")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "attr",value = "level，游客等级，distance 离景区距离，goodNums 点赞数",paramType = "query",dataType = "String"),
-            @ApiImplicitParam(name = "longitude",value = "经度",paramType = "query",dataType = "double"),
-            @ApiImplicitParam(name = "latitude",value = "维度",paramType = "query",dataType = "double"),
+            @ApiImplicitParam(name = "longitude",value = "经度",paramType = "query",dataType = "Double"),
+            @ApiImplicitParam(name = "latitude",value = "维度",paramType = "query",dataType = "Double"),
     })
 
-    public ResultDTO recommend(String attr,double longitude,double latitude,HttpServletRequest request)throws Exception{
+    public ResultDTO recommend(String attr,Double longitude,Double latitude,HttpServletRequest request)throws Exception{
         List<Video> videoList = videoService.findAll();
         Long touristId = (Long) request.getSession().getAttribute("touristId");
         List<VideoDTO> videoDTOS = new ArrayList<>();
@@ -206,11 +206,11 @@ public class TouristController {
                     v.getLikeNums()
             ));
         }
-        if(attr== RecommendAttrs.DIS.getAttr()){
+        if(attr.equals(RecommendAttrs.DIS.getAttr()) ){
             return ResultUtil.Success(SortUtil.sortByDistance(videoDTOS,"ASC"));
-        }else if(attr == RecommendAttrs.LEV.getAttr()){
+        }else if(attr.equals(RecommendAttrs.LEV.getAttr()) ){
             return ResultUtil.Success(SortUtil.sortByGuideLevel(videoDTOS,"ASC"));
-        }else if(attr == RecommendAttrs.GN.getAttr()){
+        }else if(attr.equals(RecommendAttrs.GN.getAttr()) ){
             return ResultUtil.Success(SortUtil.sortVideoByLikeNums(videoDTOS,"ASC"));
         }else{
             return ResultUtil.Error(ErrorCode.INVALID_PARAMETERS);
