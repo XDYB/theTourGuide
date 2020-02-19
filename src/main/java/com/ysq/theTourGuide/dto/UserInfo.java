@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserInfo {
 
-    private Long openId;
+    private String openId;
     private String nickName;
     private String avatarUrl;
     private String gender;

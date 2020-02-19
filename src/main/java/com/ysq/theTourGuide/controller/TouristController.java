@@ -140,7 +140,7 @@ public class TouristController {
         String responseBody = HttpClientUtil.doGet(apiUrl);
         System.out.println(responseBody);
         JSONObject jsonObject = JSON.parseObject(responseBody);
-        request.getSession().setAttribute("touristId",jsonObject.getString("open_id"));
+
         return ResultUtil.Success(jsonObject);
     }
 
@@ -152,17 +152,21 @@ public class TouristController {
      */
     @PostMapping("/saveUserInfo")
     @ApiOperation("提交用户信息，若已存在则对比信息是否一致，否则更新数据库")
-    public ResultDTO saveUserInfo(UserInfo userInfo)throws Exception{
-        Tourist tourist = touristService.get(userInfo.getOpenId());
-        System.out.println(tourist.toString());
-        if(tourist!=null){
+    public ResultDTO saveUserInfo(UserInfo userInfo,HttpServletRequest request)throws Exception{
+        List<Tourist> touristList = touristService.findByParams(new Tourist(userInfo));
+        if(touristList.size() == 0){
+            Tourist save = touristService.save(new Tourist(userInfo));
+            request.getSession().setAttribute("touristId",save.getId());
+            return ResultUtil.Success(save);
+        }else{
+            Tourist tourist = touristList.get(0);
+            request.getSession().setAttribute("touristId",tourist.getId());
             if(!userInfo.equals(new UserInfo(tourist))){
                 touristService.update(new Tourist(userInfo));
                 return ResultUtil.Success();
             }
-        }else{
-            return ResultUtil.Success(touristService.save(new Tourist(userInfo)));
         }
+
 
         return ResultUtil.Error(ErrorCode.UNKNOWERROR);
     }

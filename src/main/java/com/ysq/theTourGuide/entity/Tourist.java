@@ -13,8 +13,10 @@ import javax.persistence.Id;
 @AllArgsConstructor
 public class Tourist {
     @Id
+    private Long id;
+
     @Column(name = "open_id")
-    private Long openId;
+    private String openId;
 
     /**
      * 昵称
@@ -92,5 +94,8 @@ public class Tourist {
         this.province = userInfo.getProvince();
         this.city = userInfo.getCity();
         this.country = userInfo.getCountry();
+        this.score = 0;
+        this.isGuide = false;
+        this.isVip = false;
     }
 }
