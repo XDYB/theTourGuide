@@ -67,7 +67,7 @@ public class GuideController {
         tourist.setIsGuide(true);
         touristService.update(tourist);
         guide.setTouristId(touristId);
-        return ResultUtil.Success(guideService.saveDTO(guide, Guide.class));
+        return ResultUtil.Success(guideService.save(new Guide(guide)));
     }
 
     /**

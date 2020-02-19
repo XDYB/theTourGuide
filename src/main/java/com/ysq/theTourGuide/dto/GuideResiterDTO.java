@@ -19,7 +19,7 @@ public class GuideResiterDTO extends BaseDTO {
 
     private String touristCertificateUrl;
 
-    private String level;
+    private Integer level;
 
     private String language;
 

@@ -11,7 +11,8 @@
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="tourist_certificate_url" property="touristCertificateUrl" jdbcType="VARCHAR" />
     <result column="level" property="level" jdbcType="INTEGER" />
-    <result column="the_guide_number" property="theGuideNumber" jdbcType="BIGINT" />
+    <result column="language" property="language" jdbcType="VARCHAR" />
+    <result column="the_guide_number" property="theGuideNumber" jdbcType="VARCHAR" />
     <result column="organization" property="organization" jdbcType="VARCHAR" />
     <result column="date" property="date" jdbcType="VARCHAR" />
     <result column="grade" property="grade" jdbcType="VARCHAR" />

@@ -1,5 +1,6 @@
 package com.ysq.theTourGuide.entity;
 
+import com.ysq.theTourGuide.dto.GuideResiterDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,10 +43,15 @@ public class Guide {
     private Integer level;
 
     /**
+     * 语言
+     */
+    private String language;
+
+    /**
      * 导游证号
      */
     @Column(name = "the_guide_number")
-    private Long theGuideNumber;
+    private String theGuideNumber;
 
     /**
      * 所在机构
@@ -101,6 +107,8 @@ public class Guide {
 
     public static final String LEVEL = "level";
 
+    public static final String LANGUAGE = "language";
+
     public static final String THE_GUIDE_NUMBER = "theGuideNumber";
 
     public static final String ORGANIZATION = "organization";
@@ -121,5 +129,21 @@ public class Guide {
 
     public Guide(Long touristId){
         this.touristId = touristId;
+    }
+
+    public Guide(GuideResiterDTO g){
+        this.touristId = g.getTouristId();
+        this.name = g.getName();
+        this.phone = g.getPhone();
+        this.touristCertificateUrl = g.getTouristCertificateUrl();
+        this.level = g.getLevel();
+        this.language = g.getLanguage();
+        this.theGuideNumber = g.getGuide_number();
+        this.organization = g.getOrganization();
+        this.date = g.getDate();
+        this.fansNums = 0;
+        this.grade = "";
+        this.years = "0";
+        this.state = 0;
     }
 }
