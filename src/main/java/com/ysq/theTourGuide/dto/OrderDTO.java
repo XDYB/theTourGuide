@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO extends BaseDTO {
+    private Long id;
     private Long touristId;
     private String title;
     private Long guideId;

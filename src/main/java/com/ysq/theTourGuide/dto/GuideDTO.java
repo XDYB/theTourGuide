@@ -12,6 +12,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class GuideDTO extends BaseDTO {
 
+
+    private Long id;
     /**
      * 姓名
      */

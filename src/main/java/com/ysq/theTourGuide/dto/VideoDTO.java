@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class VideoDTO {
 
+    private Long id;
     private Video video;
     private double distance;
     private String guide_avatar_url;

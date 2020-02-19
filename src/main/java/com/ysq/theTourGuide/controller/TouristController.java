@@ -8,7 +8,10 @@ import com.ysq.theTourGuide.base.util.ResultUtil;
 import com.ysq.theTourGuide.config.ErrorCode;
 import com.ysq.theTourGuide.config.OrderState;
 import com.ysq.theTourGuide.config.RecommendAttrs;
-import com.ysq.theTourGuide.dto.*;
+import com.ysq.theTourGuide.dto.CommentDTO;
+import com.ysq.theTourGuide.dto.OrderDTO;
+import com.ysq.theTourGuide.dto.UserInfo;
+import com.ysq.theTourGuide.dto.VideoDTO;
 import com.ysq.theTourGuide.entity.*;
 import com.ysq.theTourGuide.service.*;
 import com.ysq.theTourGuide.service.redis.IGeoService;
@@ -29,7 +32,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
@@ -131,7 +133,7 @@ public class TouristController {
      */
     @PostMapping("/login")
     @ApiOperation("登录接口返回openid 以及 session_key")
-    public ResultDTO login(String code,HttpServletRequest request){
+    public ResultDTO login(String code){
         if(!StringUtils.isNotBlank(code)){
             return ResultUtil.Error(ErrorCode.UNKNOWERROR);
         }
@@ -152,20 +154,18 @@ public class TouristController {
      */
     @PostMapping("/saveUserInfo")
     @ApiOperation("提交用户信息，若已存在则对比信息是否一致，否则更新数据库")
-    public ResultDTO saveUserInfo(UserInfo userInfo,HttpServletRequest request)throws Exception{
+    public ResultDTO saveUserInfo(UserInfo userInfo)throws Exception{
         List<Tourist> touristList = touristService.findByParams(new Tourist(userInfo.getOpenId()));
         if(touristList.size() == 0){
             Tourist save = touristService.save(new Tourist(userInfo));
-            request.getSession().setAttribute("touristId",save.getId());
             return ResultUtil.Success(save);
         }else{
             Tourist tourist = touristList.get(0);
-            request.getSession().setAttribute("touristId",tourist.getId());
             if(!userInfo.equals(new UserInfo(tourist))){
                 touristService.update(new Tourist(userInfo));
-                return ResultUtil.Success();
+                return ResultUtil.Success(tourist);
             }else{
-                return ResultUtil.Success();
+                return ResultUtil.Success(tourist);
             }
         }
 
@@ -186,9 +186,8 @@ public class TouristController {
             @ApiImplicitParam(name = "latitude",value = "维度",paramType = "query",dataType = "Double"),
     })
 
-    public ResultDTO recommend(String attr,Double longitude,Double latitude,HttpServletRequest request)throws Exception{
+    public ResultDTO recommend(String attr,Double longitude,Double latitude,Long touristId)throws Exception{
         List<Video> videoList = videoService.findAll();
-        Long touristId = (Long) request.getSession().getAttribute("touristId");
         List<VideoDTO> videoDTOS = new ArrayList<>();
         for(Video v:videoList){
             Scenic scenic = scenicService.get(v.getScenicId());
@@ -222,20 +221,20 @@ public class TouristController {
 
     /**
      *获取用户信息
-     * @param request
+     * @param touristId
      * @return
      * @throws Exception
      */
     @GetMapping("/getUserInfo")
     @ApiOperation("获取用户信息")
-    public ResultDTO getUserInfo(HttpServletRequest request)throws Exception{
-        return ResultUtil.Success(touristService.get((Long)request.getSession().getAttribute("touristId")));
+    public ResultDTO getUserInfo(Long touristId)throws Exception{
+        return ResultUtil.Success(touristService.get(touristId));
     }
 
     /**
      * 预约订单
      * @param orderDTO
-     * @param request
+     * @param touristId
      * @return
      * @throws Exception
      */
@@ -252,8 +251,7 @@ public class TouristController {
             @ApiImplicitParam(name = "idNumber",value = "身份证",paramType = "query",dataType = "String"),
             @ApiImplicitParam(name = "phone",value = "电话",paramType = "query",dataType = "String"),
     })
-    public ResultDTO booking(OrderDTO orderDTO, HttpServletRequest request)throws Exception{
-        Long touristId = (Long)request.getSession().getAttribute("touristId");
+    public ResultDTO booking(OrderDTO orderDTO,Long touristId)throws Exception{
         orderDTO.setTouristId(touristId);
         messageService.save(new Message(touristId,"预约成功"));
         return ResultUtil.Success(orderService.saveDTO(orderDTO, Order.class));
@@ -294,15 +292,14 @@ public class TouristController {
     /**
      * 给视频点赞
      * @param videoId
-     * @param request
+     * @param touristId
      * @return
      * @throws Exception
      */
     @PostMapping("/likeVideo")
     @ApiOperation("给视频点赞")
     @ApiImplicitParam(name = "videoId",value = "视频id",paramType = "query",dataType = "Long")
-    public ResultDTO likeVideo(Long videoId,HttpServletRequest request)throws Exception{
-        Long touristId = (Long)request.getSession().getAttribute("touristId");
+    public ResultDTO likeVideo(Long videoId,Long touristId)throws Exception{
         if(likeVideoService.findByParams(new LikeVideo(videoId)).size()==0){
             return ResultUtil.Success(likeVideoService.save(new LikeVideo(videoId,touristId)));
         }else {
@@ -324,8 +321,7 @@ public class TouristController {
             @ApiImplicitParam(name = "content",value = "评论内容",paramType = "query",dataType = "String"),
             @ApiImplicitParam(name = "likeNums",value = "点赞数",paramType = "query",dataType = "String")
     })
-    public ResultDTO comment(Comment comment,HttpServletRequest request)throws Exception{
-        Long touristId = (Long)request.getSession().getAttribute("touristId");
+    public ResultDTO comment(Comment comment,Long touristId)throws Exception{
         comment.setTouristId(touristId);
         comment.setCreatetime(new Date());
         return ResultUtil.Success(commentService.save(comment));
@@ -334,16 +330,15 @@ public class TouristController {
     /**
      * 获取评论
      * @param videoId
-     * @param request
+     * @param touristId
      * @return
      * @throws Exception
      */
     @GetMapping("/getComments")
     @ApiOperation("获取评论")
     @ApiImplicitParam(name = "videoId",value = "视频id",paramType = "query",dataType = "Long")
-    public ResultDTO getComments(Long videoId,HttpServletRequest request)throws Exception{
+    public ResultDTO getComments(Long videoId,Long touristId)throws Exception{
         List<CommentDTO> commentDTOS = new ArrayList<>();
-        Long touristId = (Long) request.getSession().getAttribute("touristId");
         for(Comment c:commentService.findAll()){
             Tourist tourist = touristService.get(c.getTouristId());
             boolean isLike = likeCommentService.findByParams(new LikeComment(touristId,c.getId())).size()==0 ? false : true;
@@ -395,27 +390,27 @@ public class TouristController {
 
     /**
      * 获取他的未查阅的消息数量
-     * @param request
+     * @param touristId
      * @return
      * @throws Exception
      */
     @GetMapping("/getMsgNums")
     @ApiOperation("获取他的未查阅的消息数量")
-    public ResultDTO getMsgNums(HttpServletRequest request)throws Exception{
-        return ResultUtil.Success(messageService.countAll(new Message((Long)request.getSession().getAttribute("touristId"))));
+    public ResultDTO getMsgNums(Long touristId )throws Exception{
+        return ResultUtil.Success(messageService.countAll(new Message(touristId)));
     }
 
     /**
      * 获取他的消息
-     * @param request
+     * @param touristId
      * @return
      * @throws Exception
      */
     @GetMapping("/getMsgs")
     @ApiOperation("获取他的消息")
-    public ResultDTO getMsgs(HttpServletRequest request)throws Exception{
+    public ResultDTO getMsgs(Long touristId )throws Exception{
         Message message = new Message();
-        message.setTouristId((Long)request.getSession().getAttribute("touristId"));
+        message.setTouristId(touristId);
         return ResultUtil.Success(messageService.findByParams(message));
     }
 

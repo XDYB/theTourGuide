@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,9 +55,9 @@ public class GuideController {
             @ApiImplicitParam(value = "所属组织",name = "organization",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "期限",name = "date",dataType = "String",paramType = "query"),
     })
-    public ResultDTO toBeAGuide(GuideResiterDTO guide,HttpServletRequest request) throws Exception{
+    public ResultDTO toBeAGuide(GuideResiterDTO guide,Long touristId) throws Exception{
         Tourist tourist = new Tourist();
-        tourist.setId((Long)request.getSession().getAttribute("touristId"));
+        tourist.setId(touristId);
         tourist.setIsGuide(true);
         touristService.update(tourist);
         return ResultUtil.Success(guideService.saveDTO(guide, Guide.class));
@@ -84,8 +83,8 @@ public class GuideController {
             @ApiImplicitParam(value = "优惠额度",name = "discountValue",dataType = "Boolean",paramType = "query"),
             @ApiImplicitParam(value = "描述",name = "describe",dataType = "Boolean",paramType = "query"),
     })
-    public ResultDTO postMsg(Route route, HttpServletRequest request)throws Exception{
-        Long guideId = guideService.findByParams(new Guide((Long)request.getSession().getAttribute("touristId"))).get(0).getId();
+    public ResultDTO postMsg(Route route, Long touristId )throws Exception{
+        Long guideId = guideService.findByParams(new Guide(touristId)).get(0).getId();
         route.setGuideId(guideId);
         return ResultUtil.Success(routeService.save(route));
     }
@@ -93,7 +92,7 @@ public class GuideController {
     /**
      * 上传视频
      * @param video
-     * @param request
+     * @param touristId
      * @return
      * @throws Exception
      */
@@ -104,22 +103,22 @@ public class GuideController {
             @ApiImplicitParam(value = "景区id",name = "scenicId",dataType = "Boolean",paramType = "query"),
             @ApiImplicitParam(value = "视频地址",name = "videoUrl",dataType = "Boolean",paramType = "query"),
     })
-    public ResultDTO postVideo(Video video,HttpServletRequest request)throws Exception{
-        Long guideId = guideService.findByParams(new Guide((Long)request.getSession().getAttribute("touristId"))).get(0).getId();
+    public ResultDTO postVideo(Video video,Long touristId )throws Exception{
+        Long guideId = guideService.findByParams(new Guide(touristId)).get(0).getId();
         video.setGuideId(guideId);
         return ResultUtil.Success(videoService.save(video));
     }
 
     /**
      * 获得导游信息
-     * @param request
+     * @param touristId
      * @return
      * @throws Exception
      */
     @GetMapping("/getGuideMsg")
     @ApiOperation("获得导游信息")
-    public ResultDTO getGuideMsg(HttpServletRequest request)throws Exception{
-        Long guideId = guideService.findByParams(new Guide((Long)request.getSession().getAttribute("touristId"))).get(0).getId();
+    public ResultDTO getGuideMsg(Long touristId )throws Exception{
+        Long guideId = guideService.findByParams(new Guide(touristId)).get(0).getId();
 
         return ResultUtil.Success(guideService.get(guideId));
     }
@@ -127,7 +126,7 @@ public class GuideController {
     /**
      * 修改导游信息
      * @param guideDTO
-     * @param request
+     * @param touristId
      * @return
      * @throws Exception
      */
@@ -142,33 +141,35 @@ public class GuideController {
             @ApiImplicitParam(value = "期限",name = "date",dataType = "Boolean",paramType = "query"),
             @ApiImplicitParam(value = "导游年份",name = "years",dataType = "Boolean",paramType = "query"),
     })
-    public ResultDTO updateGuideMsg(GuideDTO guideDTO,HttpServletRequest request)throws Exception{
+    public ResultDTO updateGuideMsg(GuideDTO guideDTO,Long touristId)throws Exception{
+        Guide guide = new Guide();
+        guide.setTouristId(touristId);
+        guideDTO.setId(guideService.findByParams(guide).get(0).getId());
         guideService.updateDTO(guideDTO,Guide.class);
         return ResultUtil.Success();
     }
 
     /**
      * 获得我（导游）的视频
-     * @param request
+     * @param touristId
      * @return
      * @throws Exception
      */
     @GetMapping("/getVideo")
-    public ResultDTO getVideo(HttpServletRequest request)throws Exception{
-        Long guideId = guideService.findByParams(new Guide((Long)request.getSession().getAttribute("touristId"))).get(0).getId();
+    public ResultDTO getVideo(Long touristId )throws Exception{
+        Long guideId = guideService.findByParams(new Guide(touristId)).get(0).getId();
 
         return ResultUtil.Success(videoService.findByParams(new Video(guideId)));
     }
 
     /**
      * 获得我的（导游）的喜欢
-     * @param request
+     * @param touristId
      * @return
      * @throws Exception
      */
     @GetMapping("/getLike")
-    public ResultDTO getLike(HttpServletRequest request)throws Exception{
-        Long touristId = (Long)request.getSession().getAttribute("touristId");
+    public ResultDTO getLike(Long touristId)throws Exception{
         LikeVideo likeVideo = new LikeVideo();
         likeVideo.setTouristId(touristId);
         List<Video> videoList = new ArrayList<>();
@@ -180,13 +181,13 @@ public class GuideController {
 
     /**
      * 获得我的预约
-     * @param request
+     * @param touristId
      * @return
      * @throws Exception
      */
     @GetMapping("/getMyOrder")
-    public ResultDTO getMyOrder(HttpServletRequest request)throws Exception {
-        Long guideId = guideService.findByParams(new Guide((Long) request.getSession().getAttribute("touristId"))).get(0).getId();
+    public ResultDTO getMyOrder(Long touristId)throws Exception {
+        Long guideId = guideService.findByParams(new Guide(touristId)).get(0).getId();
         return ResultUtil.Success(orderService.findByParams(new Order(guideId)));
     }
 }
