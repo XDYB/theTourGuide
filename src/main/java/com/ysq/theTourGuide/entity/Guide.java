@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -56,7 +55,7 @@ public class Guide {
     /**
      * 期限
      */
-    private Date date;
+    private String date;
 
     /**
      * 评分

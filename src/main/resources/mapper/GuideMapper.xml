@@ -13,7 +13,7 @@
     <result column="level" property="level" jdbcType="INTEGER" />
     <result column="the_guide_number" property="theGuideNumber" jdbcType="BIGINT" />
     <result column="organization" property="organization" jdbcType="VARCHAR" />
-    <result column="date" property="date" jdbcType="TIMESTAMP" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
     <result column="grade" property="grade" jdbcType="VARCHAR" />
     <result column="years" property="years" jdbcType="VARCHAR" />
     <result column="like_nums" property="likeNums" jdbcType="INTEGER" />
