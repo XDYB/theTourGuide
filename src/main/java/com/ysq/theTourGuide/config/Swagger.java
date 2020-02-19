@@ -33,9 +33,9 @@ public class Swagger {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("项目名")
-                .version("版本号")
-                .description("描述")
+                .title("超级导游")
+                .version("1.0.0")
+                .description("基于人工的小程序后台接口")
                 .build();
     }
 }

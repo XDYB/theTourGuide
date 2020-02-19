@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GuideResiterDTO extends BaseDTO {
+    private Long id;
 
     private String name;
 
@@ -16,7 +17,7 @@ public class GuideResiterDTO extends BaseDTO {
 
     private String touristCertificateUrl;
 
-    private Integer level;
+    private String level;
 
     private String language;
 

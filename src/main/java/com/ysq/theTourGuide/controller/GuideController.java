@@ -47,11 +47,11 @@ public class GuideController {
             @ApiImplicitParam(value = "姓名",name = "name",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "电话",name = "phone",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "导游证url",name = "touristCertificateUrl",dataType = "String",paramType = "query"),
-            @ApiImplicitParam(value = "等级",name = "level",dataType = "Integer",paramType = "query"),
+            @ApiImplicitParam(value = "等级",name = "level",dataType = "int",paramType = "query"),
             @ApiImplicitParam(value = "语言",name = "language",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "导游证号",name = "guide_number",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "所属组织",name = "organization",dataType = "String",paramType = "query"),
-            @ApiImplicitParam(value = "期限",name = "date",dataType = "Date",paramType = "query"),
+            @ApiImplicitParam(value = "期限",name = "date",dataType = "String",paramType = "query"),
     })
     public ResultDTO toBeAGuide(GuideResiterDTO guide) throws Exception{
         return ResultUtil.Success(guideService.saveDTO(guide, Guide.class));
