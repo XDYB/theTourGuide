@@ -2,6 +2,7 @@ package com.ysq.theTourGuide.controller;
 
 import com.ysq.theTourGuide.base.dto.ResultDTO;
 import com.ysq.theTourGuide.base.util.ResultUtil;
+import com.ysq.theTourGuide.config.ErrorCode;
 import com.ysq.theTourGuide.dto.GuideDTO;
 import com.ysq.theTourGuide.dto.GuideResiterDTO;
 import com.ysq.theTourGuide.entity.*;
@@ -56,10 +57,16 @@ public class GuideController {
             @ApiImplicitParam(value = "期限",name = "date",dataType = "String",paramType = "query"),
     })
     public ResultDTO toBeAGuide(GuideResiterDTO guide,Long touristId) throws Exception{
+        Guide g = new Guide();
+        g.setTouristId(touristId);
+        if(guideService.findByParams(g).size()!=0){
+            return ResultUtil.Error(ErrorCode.ISEXIST);
+        }
         Tourist tourist = new Tourist();
         tourist.setId(touristId);
         tourist.setIsGuide(true);
         touristService.update(tourist);
+        guide.setTouristId(touristId);
         return ResultUtil.Success(guideService.saveDTO(guide, Guide.class));
     }
 

@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 public class GuideResiterDTO extends BaseDTO {
     private Long id;
 
+    private Long touristId;
+
     private String name;
 
     private String phone;
