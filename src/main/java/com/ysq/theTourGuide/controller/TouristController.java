@@ -171,6 +171,7 @@ public class TouristController {
 
     }
 
+
     /**
      * 根据参数排序视频给用户
      * @param attr //level，游客等级，distance 离景区距离，goodNums 点赞数
@@ -219,6 +220,17 @@ public class TouristController {
 
     }
 
+    /**
+     *获取用户信息
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getUserInfo")
+    @ApiOperation("获取用户信息")
+    public ResultDTO getUserInfo(HttpServletRequest request)throws Exception{
+        return ResultUtil.Success(touristService.get((Long)request.getSession().getAttribute("touristId")));
+    }
 
     /**
      * 预约订单
