@@ -11,7 +11,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class CommentDTO {
 
-    private Long id;
     private String avatar_url;
     private String nickname;
     private String content;
