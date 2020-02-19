@@ -28,4 +28,11 @@ public class ResultUtil {
         resultDto.setCode(errorCode.getCode());
         return resultDto;
     }
+
+    public static ResultDTO Error(String code, String msg){
+        ResultDTO resultDto = new ResultDTO();
+        resultDto.setMsg(msg);
+        resultDto.setCode(code);
+        return resultDto;
+    }
 }

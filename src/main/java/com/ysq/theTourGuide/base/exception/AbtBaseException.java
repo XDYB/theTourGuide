@@ -2,7 +2,6 @@ package com.ysq.theTourGuide.base.exception;
 
 import com.ysq.theTourGuide.base.dto.ResultDTO;
 import com.ysq.theTourGuide.base.util.ResultUtil;
-import com.ysq.theTourGuide.config.ErrorCode;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,10 +40,10 @@ public class AbtBaseException extends RuntimeException {
     public ResultDTO allExceptionHandler(HttpServletRequest request, Exception exception) throws Exception {
         if(exception instanceof  AbtBaseException){
             AbtBaseException abe = (AbtBaseException)exception;
-            return ResultUtil.Error(ErrorCode.UNKNOWERROR);
+            return ResultUtil.Error(abe.code,abe.arguments);
         }
         log.error("error", exception);
-        return ResultUtil.Error(ErrorCode.NOEXIST);
+        return ResultUtil.Error("500",exception.toString());
     }
 
     public String getCode() {
