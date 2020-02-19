@@ -129,7 +129,7 @@ public class TouristController {
      * @param code
      * @return
      */
-    @GetMapping("/login")
+    @PostMapping("/login")
     @ApiOperation("登录接口返回openid 以及 session_key")
     public ResultDTO login(String code,HttpServletRequest request){
         if(!StringUtils.isNotBlank(code)){
