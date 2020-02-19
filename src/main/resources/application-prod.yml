@@ -60,8 +60,8 @@ logging:
     com.ysq.theToutGuide.mapper: DEBUG
 
 app:
-  appid: 11
-  appSecret: 111
+  appid: 003ZuySu0c28Ug1R2rTu0RWySu0ZuySo
+  appSecret: 909c6b30bbab948fc6616f3df8b966aa
   appTimeOut: 10000
 
 geo:
