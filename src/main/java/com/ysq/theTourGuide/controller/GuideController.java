@@ -56,17 +56,16 @@ public class GuideController {
             @ApiImplicitParam(value = "所属组织",name = "organization",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "期限",name = "date",dataType = "String",paramType = "query"),
     })
-    public ResultDTO toBeAGuide(GuideResiterDTO guide,Long touristId) throws Exception{
+    public ResultDTO toBeAGuide(GuideResiterDTO guide) throws Exception{
         Guide g = new Guide();
-        g.setTouristId(touristId);
+        g.setTouristId(guide.getTouristId());
         if(guideService.findByParams(g).size()!=0){
             return ResultUtil.Error(ErrorCode.ISEXIST);
         }
         Tourist tourist = new Tourist();
-        tourist.setId(touristId);
+        tourist.setId(guide.getTouristId());
         tourist.setIsGuide(true);
         touristService.update(tourist);
-        guide.setTouristId(touristId);
         return ResultUtil.Success(guideService.save(new Guide(guide)));
     }
 
