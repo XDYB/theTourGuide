@@ -12,12 +12,12 @@
     <result column="noss" property="noss" jdbcType="INTEGER" />
     <result column="nosss" property="nosss" jdbcType="INTEGER" />
     <result column="h_shop" property="hShop" jdbcType="BIT" />
-    <result column="language" property="language" jdbcType="VARCHAR" />
+    <result column="g_language" property="gLanguage" jdbcType="VARCHAR" />
     <result column="n_o_p" property="nOP" jdbcType="INTEGER" />
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="discount_type_id" property="discountTypeId" jdbcType="INTEGER" />
     <result column="discount_value" property="discountValue" jdbcType="INTEGER" />
-    <result column="describe" property="describe" jdbcType="VARCHAR" />
+    <result column="r_describe" property="rDescribe" jdbcType="VARCHAR" />
     <result column="guide_id" property="guideId" jdbcType="BIGINT" />
   </resultMap>
 </mapper>

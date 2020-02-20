@@ -51,7 +51,7 @@ public class Route {
     /**
      * 语言
      */
-    private String language;
+    private String gLanguage;
 
     /**
      * 人数上限
@@ -79,7 +79,7 @@ public class Route {
     /**
      * 描述
      */
-    private String describe;
+    private String rDescribe;
 
     /**
      * 导游id
@@ -99,7 +99,7 @@ public class Route {
 
     public static final String H_SHOP = "hShop";
 
-    public static final String LANGUAGE = "language";
+    public static final String G_LANGUAGE = "gLanguage";
 
     public static final String N_O_P = "nOP";
 
@@ -109,7 +109,7 @@ public class Route {
 
     public static final String DISCOUNT_VALUE = "discountValue";
 
-    public static final String DESCRIBE = "describe";
+    public static final String R_DESCRIBE = "rDescribe";
 
     public static final String GUIDE_ID = "guideId";
 

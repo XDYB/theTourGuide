@@ -63,7 +63,7 @@ public class Video {
 
     public static final String LIKE_NUMS = "likeNums";
 
-    public static final String VDESCRIBE = "vDescribe";
+    public static final String V_DESCRIBE = "vDescribe";
 
     public Video(Long guideId){
         this.guideId = guideId;
