@@ -14,7 +14,7 @@
     <result column="the_guide_number" property="theGuideNumber" jdbcType="VARCHAR" />
     <result column="organization" property="organization" jdbcType="VARCHAR" />
     <result column="date" property="date" jdbcType="VARCHAR" />
-    <result column="grade" property="grade" jdbcType="VARCHAR" />
+    <result column="grade" property="grade" jdbcType="DOUBLE" />
     <result column="years" property="years" jdbcType="VARCHAR" />
     <result column="like_nums" property="likeNums" jdbcType="INTEGER" />
     <result column="price" property="price" jdbcType="INTEGER" />

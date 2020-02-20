@@ -115,4 +115,9 @@ public class TheOrder {
         this.guideId = guideId;
     }
 
+    public TheOrder(Long guideId,String state){
+        this.guideId = guideId;
+        this.state = state;
+    }
+
 }

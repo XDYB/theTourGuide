@@ -64,7 +64,7 @@ public class Guide {
     /**
      * 评分
      */
-    private Integer grade;
+    private Double grade;
 
     /**
      * 导游年份
@@ -129,9 +129,10 @@ public class Guide {
         this.touristId = touristId;
     }
 
-    public Guide(Long id,Integer likeNums){
+    public Guide(Long id,Integer likeNums,Double grade){
         this.id = id;
         this.likeNums = likeNums;
+        this.grade = grade;
     }
 
     public Guide(GuideResiterDTO g){
@@ -144,7 +145,8 @@ public class Guide {
         this.organization = g.getOrganization();
         this.date = g.getDate();
         this.fansNums = 0;
-        this.grade = 0;
+        this.likeNums = 0;
+        this.grade = 0.00;
         this.years = "0";
         this.state = 0;
     }

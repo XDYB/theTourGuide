@@ -10,6 +10,7 @@ import com.ysq.theTourGuide.entity.*;
 import com.ysq.theTourGuide.service.*;
 import com.ysq.theTourGuide.service.redis.GuideGeoService;
 import com.ysq.theTourGuide.utils.Location;
+import com.ysq.theTourGuide.utils.ScoreUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -132,7 +133,11 @@ public class GuideController {
         for(Video v: videoService.findByParams(new Video(guideId))){
             allLikeNums += v.getLikeNums();
         }
-        guideService.update(new Guide(guideId,allLikeNums));
+        Guide guide = guideService.get(guideId);
+        Long videoNums = videoService.countAll(new Video(guideId));
+        Long orderNums = theOrderService.countAll(new TheOrder(guideId,"111"));
+        guideService.update(new Guide(guideId,allLikeNums,
+                ScoreUtil.getScore(guide.getLevel(),videoNums,orderNums,allLikeNums)));
         return ResultUtil.Success(guideService.get(guideId));
     }
 

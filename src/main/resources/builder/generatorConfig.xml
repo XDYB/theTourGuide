@@ -33,13 +33,15 @@
 <!--        <table tableName="guide"/>-->
 <!--        <table tableName="video"/>-->
 <!--        <table tableName="like_video"/>-->
-<!--        <table tableName="order"/>-->
+<!--        <table tableName="the_order"/>-->
 <!--        <table tableName="route"/>-->
 <!--        <table tableName="scenic"/>-->
 <!--        <table tableName="comment"/>-->
 <!--        <table tableName="scenic_spot"/>-->
 <!--        <table tableName="like_comment"/>-->
-        <table tableName="message"/>
+<!--        <table tableName="message"/>-->
+        <table tableName="score_rule"/>
+        <table tableName="score_type"/>
 
     </context>
 </generatorConfiguration>
