@@ -17,4 +17,5 @@ public class VideoDTO {
     private boolean is_like;
     private Integer comment_counts;
     private Integer likeNums;
+    private String guide_name;
 }

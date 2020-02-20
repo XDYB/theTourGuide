@@ -203,7 +203,8 @@ public class TouristController {
                     guide.getLevel(),
                     isLike,
                     comment_counts,
-                    v.getLikeNums()
+                    v.getLikeNums(),
+                    guide.getName()
             ));
         }
         if(attr.equals(RecommendAttrs.DIS.getAttr()) ){
