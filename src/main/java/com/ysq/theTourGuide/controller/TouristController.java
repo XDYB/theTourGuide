@@ -354,7 +354,8 @@ public class TouristController {
                     tourist.getNickname(),
                     c.getContent(),
                     c.getCreatetime(),
-                    isLike)
+                    isLike,
+                    c.getLikeNums())
             );
         }
         return ResultUtil.Success(commentDTOS);

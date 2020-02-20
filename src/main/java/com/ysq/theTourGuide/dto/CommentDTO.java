@@ -16,4 +16,5 @@ public class CommentDTO {
     private String content;
     private Date time;
     private boolean isLike;
+    private Integer likeNums;
 }
