@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -27,6 +28,9 @@ public class Message {
      */
     private Byte state;
 
+
+    private Date date;
+
     public static final String ID = "id";
 
     public static final String TOURIST_ID = "touristId";
@@ -34,6 +38,9 @@ public class Message {
     public static final String MESSAGE = "message";
 
     public static final String STATE = "state";
+
+    public static final String DATE = "date";
+
 
     public Message(Long touristId){
         this.touristId = touristId;
@@ -43,6 +50,8 @@ public class Message {
     public Message(Long touristId,String message){
         this.touristId = touristId;
         this.message = message;
+        this.state = 0;
+        this.date = new Date();
     }
 
     public Message(Long id,Byte state){

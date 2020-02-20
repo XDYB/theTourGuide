@@ -9,7 +9,6 @@ import com.ysq.theTourGuide.config.ErrorCode;
 import com.ysq.theTourGuide.config.OrderState;
 import com.ysq.theTourGuide.config.RecommendAttrs;
 import com.ysq.theTourGuide.dto.CommentDTO;
-import com.ysq.theTourGuide.dto.OrderDTO;
 import com.ysq.theTourGuide.dto.UserInfo;
 import com.ysq.theTourGuide.dto.VideoDTO;
 import com.ysq.theTourGuide.entity.*;
@@ -66,7 +65,7 @@ public class TouristController {
     ScenicService scenicService;
 
     @Autowired
-    OrderService orderService;
+    TheOrderService theOrderService;
 
     @Autowired
     LikeVideoService likeVideoService;
@@ -234,28 +233,29 @@ public class TouristController {
 
     /**
      * 预约订单
-     * @param orderDTO
-     * @param touristId
+     * @param order
      * @return
      * @throws Exception
      */
     @PostMapping("/booking")
     @ApiOperation("预约订单")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "title",value = "路线",paramType = "query",dataType = "String"),
+            @ApiImplicitParam(name = "touristId",value = "游客id",paramType = "query",dataType = "Long"),
+            @ApiImplicitParam(name = "routeId",value = "路线id",paramType = "query",dataType = "Long"),
             @ApiImplicitParam(name = "guideId",value = "导游id",paramType = "query",dataType = "Long"),
-            @ApiImplicitParam(name = "start",value = "出发点",paramType = "query",dataType = "String"),
+            @ApiImplicitParam(name = "tStart",value = "出发点",paramType = "query",dataType = "String"),
             @ApiImplicitParam(name = "nOP",value = "人数",paramType = "query",dataType = "Integer"),
             @ApiImplicitParam(name = "time",value = "时长",paramType = "query",dataType = "String"),
-            @ApiImplicitParam(name = "meetTime",value = "碰面时间",paramType = "query",dataType = "String"),
-            @ApiImplicitParam(name = "name",value = "路线",paramType = "query",dataType = "String"),
+            @ApiImplicitParam(name = "meetTime",value = "碰面时间",paramType = "query",dataType = "Date"),
+            @ApiImplicitParam(name = "tName",value = "名字",paramType = "query",dataType = "String"),
             @ApiImplicitParam(name = "idNumber",value = "身份证",paramType = "query",dataType = "String"),
             @ApiImplicitParam(name = "phone",value = "电话",paramType = "query",dataType = "String"),
     })
-    public ResultDTO booking(OrderDTO orderDTO,Long touristId)throws Exception{
-        orderDTO.setTouristId(touristId);
-        messageService.save(new Message(touristId,"预约成功"));
-        return ResultUtil.Success(orderService.saveDTO(orderDTO, Order.class));
+    public ResultDTO booking(TheOrder order)throws Exception{
+        order.setState("222");
+        TheOrder save = theOrderService.save(order);
+        messageService.save(new Message(save.getTouristId(),"订单号为" + save.getId() + "的订单预约成功"));
+        return ResultUtil.Success(save);
     }
 
     /**
@@ -268,8 +268,8 @@ public class TouristController {
     @ApiOperation("取消订单")
     @ApiImplicitParam(value = "订单id",name = "orderId",paramType = "query",dataType = "Long")
     public ResultDTO cancelOrder(Long orderId)throws Exception{
-        if(orderService.get(orderId)!=null) {
-            orderService.update(new Order(OrderState.CANCEL.getState()));
+        if(theOrderService.get(orderId)!=null) {
+            theOrderService.update(new TheOrder(OrderState.CANCEL.getState()));
             return ResultUtil.Success();
         }else{
             return ResultUtil.Error(ErrorCode.NOEXIST);
@@ -286,7 +286,7 @@ public class TouristController {
     @ApiOperation("完成订单")
     @ApiImplicitParam(value = "订单id",name = "orderId",paramType = "query",dataType = "Long")
     public ResultDTO finishOrder(Long orderId)throws Exception{
-        orderService.update(new Order(OrderState.FINISH.getState()));
+        theOrderService.update(new TheOrder(OrderState.FINISH.getState()));
         return ResultUtil.Success();
     }
 
@@ -352,10 +352,8 @@ public class TouristController {
             boolean isLike = likeCommentService.findByParams(new LikeComment(touristId,c.getId())).size()==0 ? false : true;
             commentDTOS.add(new CommentDTO(tourist.getAvatarUrl(),
                     tourist.getNickname(),
-                    c.getContent(),
-                    c.getCreatetime(),
                     isLike,
-                    c.getLikeNums())
+                    c)
             );
         }
         return ResultUtil.Success(commentDTOS);
@@ -458,8 +456,8 @@ public class TouristController {
     @ApiImplicitParam(name = "messageId",value = "消息id",paramType = "query",dataType = "Long")
     public ResultDTO getMsg(Long messageId)throws Exception{
         Message message = messageService.get(messageId);
-        byte t = 1;
-        messageService.update(new Message(messageId,t));
+        Byte state = 1;
+        messageService.update(new Message(messageId,state));
         return ResultUtil.Success(message);
     }
 //

@@ -5,20 +5,23 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO extends BaseDTO {
     private Long id;
     private Long touristId;
-    private String title;
+    private Long routeId;
     private Long guideId;
-    private String start;
+    private String tStart;
     private Integer nOP;
-    private String time;
+    private Date time;
     private String meetTime;
-    private String name;
+    private String tName;
     private String idNumber;
     private String phone;
+    private String state = "222";
 
 }

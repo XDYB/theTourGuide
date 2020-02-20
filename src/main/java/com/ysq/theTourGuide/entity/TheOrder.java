@@ -3,6 +3,7 @@ package com.ysq.theTourGuide.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -13,7 +14,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order {
+public class TheOrder {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -25,9 +26,10 @@ public class Order {
     private Long touristId;
 
     /**
-     * 订单标题
+     * 路线id
      */
-    private String title;
+    @Column(name = "route_id")
+    private Long routeId;
 
     /**
      * 导游id
@@ -38,7 +40,8 @@ public class Order {
     /**
      * 出发点
      */
-    private String start;
+    @Column(name = "t_start")
+    private String tStart;
 
     /**
      * 人数
@@ -55,6 +58,7 @@ public class Order {
      * 碰面时间
      */
     @Column(name = "meet_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date meetTime;
 
     /**
@@ -65,7 +69,8 @@ public class Order {
     /**
      * 姓名
      */
-    private String name;
+    @Column(name = "t_name")
+    private String tName;
 
     /**
      * 身份证号
@@ -86,7 +91,7 @@ public class Order {
 
     public static final String GUIDE_ID = "guideId";
 
-    public static final String START = "start";
+    public static final String T_START = "tStart";
 
     public static final String N_O_P = "nOP";
 
@@ -96,17 +101,18 @@ public class Order {
 
     public static final String STATE = "state";
 
-    public static final String NAME = "name";
+    public static final String T_NAME = "tName";
 
     public static final String ID_NUMBER = "idNumber";
 
     public static final String PHONE = "phone";
 
-    public Order(String state){
+    public TheOrder(String state){
         this.state = state;
     }
 
-    public Order(Long guideId){
+    public TheOrder(Long guideId){
         this.guideId = guideId;
     }
+
 }

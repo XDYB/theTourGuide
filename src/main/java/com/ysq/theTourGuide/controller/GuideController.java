@@ -40,7 +40,7 @@ public class GuideController {
     LikeVideoService likeVideoService;
 
     @Autowired
-    OrderService orderService;
+    TheOrderService theOrderService;
 
     @Autowired
     GuideGeoService guideGeoService;
@@ -204,7 +204,7 @@ public class GuideController {
     @ApiOperation("获得我的预约")
     public ResultDTO getMyOrder(Long touristId)throws Exception {
         Long guideId = guideService.findByParams(new Guide(touristId)).get(0).getId();
-        return ResultUtil.Success(orderService.findByParams(new Order(guideId)));
+        return ResultUtil.Success(theOrderService.findByParams(new TheOrder(guideId)));
     }
 
 

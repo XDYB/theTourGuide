@@ -9,6 +9,7 @@
     <result column="tourist_id" jdbcType="BIGINT" property="touristId" />
     <result column="message" jdbcType="VARCHAR" property="message" />
     <result column="state" jdbcType="TINYINT" property="state" />
+    <result column="date" jdbcType="DATE" property="date" />
   </resultMap>
 
 </mapper>
