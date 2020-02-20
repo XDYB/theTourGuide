@@ -9,10 +9,7 @@ import com.ysq.theTourGuide.dto.DownloadFileResult;
 import com.ysq.theTourGuide.dto.UploadFileResult;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -39,14 +36,14 @@ public class AliyunOSSUtil {
         UploadFileResult uploadFileResult = new UploadFileResult();
 
         // 默认值为：true
-        boolean isImage = true;
+//        boolean isImage = true;
         // 判断所要上传的图片是否是图片，图片可以预览，其他文件不提供通过URL预览
-        try {
-            Image image = ImageIO.read( file);
-            isImage = image == null ? false : true;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Image image = ImageIO.read( file);
+//            isImage = image == null ? false : true;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -68,11 +65,11 @@ public class AliyunOSSUtil {
             }
             // 设置文件路径和名称
             String fileUrl = fileHost + "/" + (dateStr + "/" + UUID.randomUUID().toString().replace("-", "") + "-" + file.getName());
-            if (isImage) {//如果是图片，则图片的URL为：....
+//            if (isImage) {//如果是图片，则图片的URL为：....
                 FILE_URL = "https://" + bucketName + "." + endpoint + "/" + fileUrl;
-            } else {
-                FILE_URL = "非图片，不可预览。文件路径为：" + fileUrl;
-            }
+//            } else {
+//                FILE_URL = "非图片，不可预览。文件路径为：" + fileUrl;
+//            }
 
             // 上传文件
             PutObjectResult result = ossClient.putObject(new PutObjectRequest(bucketName, fileUrl,  file));
