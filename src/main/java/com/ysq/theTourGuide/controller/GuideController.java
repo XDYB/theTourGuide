@@ -5,9 +5,11 @@ import com.ysq.theTourGuide.base.util.ResultUtil;
 import com.ysq.theTourGuide.config.ErrorCode;
 import com.ysq.theTourGuide.dto.GuideDTO;
 import com.ysq.theTourGuide.dto.GuideResiterDTO;
-import com.ysq.theTourGuide.dto.PostMsgDTO;
+import com.ysq.theTourGuide.dto.MsgDTO;
 import com.ysq.theTourGuide.entity.*;
 import com.ysq.theTourGuide.service.*;
+import com.ysq.theTourGuide.service.redis.GuideGeoService;
+import com.ysq.theTourGuide.utils.Location;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -39,6 +41,10 @@ public class GuideController {
 
     @Autowired
     OrderService orderService;
+
+    @Autowired
+    GuideGeoService guideGeoService;
+
     /**
      * 注册成为导游
      * @param guide
@@ -90,9 +96,9 @@ public class GuideController {
             @ApiImplicitParam(value = "价格",name = "price",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "优惠类型id,减免为1，折扣为2",name = "discountTypeId",dataType = "int",paramType = "query"),
             @ApiImplicitParam(value = "优惠额度",name = "discountValue",dataType = "int",paramType = "query"),
-            @ApiImplicitParam(value = "描述",name = "describe",dataType = "Boolean",paramType = "query"),
-            @ApiImplicitParam(value = "路线id",name = "routeId",dataType = "Boolean",paramType = "query"),
-            @ApiImplicitParam(value = "景区id",name = "scenicId",dataType = "Boolean",paramType = "query"),
+            @ApiImplicitParam(value = "描述",name = "describe",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(value = "路线id",name = "routeId",dataType = "Long",paramType = "query"),
+            @ApiImplicitParam(value = "景区id",name = "scenicId",dataType = "Long",paramType = "query"),
             @ApiImplicitParam(value = "视频地址",name = "videoUrl",dataType = "Boolean",paramType = "query"),
     })
     public ResultDTO postMsg(Route route, Video video,Long touristId )throws Exception{
@@ -102,7 +108,7 @@ public class GuideController {
         Video saveVideo = videoService.save(video);
         route.setVideoId(saveVideo.getId());
         Route saveRoute = routeService.save(route);
-        return ResultUtil.Success(new PostMsgDTO(saveRoute,saveVideo));
+        return ResultUtil.Success(new MsgDTO(saveRoute,saveVideo));
     }
 
 
@@ -154,6 +160,7 @@ public class GuideController {
      * @throws Exception
      */
     @GetMapping("/getVideo")
+    @ApiOperation("获得我（导游）的视频")
     public ResultDTO getVideo(Long touristId )throws Exception{
         Long guideId = guideService.findByParams(new Guide(touristId)).get(0).getId();
 
@@ -167,6 +174,7 @@ public class GuideController {
      * @throws Exception
      */
     @GetMapping("/getLike")
+    @ApiOperation("获得我的（导游）的喜欢")
     public ResultDTO getLike(Long touristId)throws Exception{
         LikeVideo likeVideo = new LikeVideo();
         likeVideo.setTouristId(touristId);
@@ -184,8 +192,34 @@ public class GuideController {
      * @throws Exception
      */
     @GetMapping("/getMyOrder")
+    @ApiOperation("获得我的预约")
     public ResultDTO getMyOrder(Long touristId)throws Exception {
         Long guideId = guideService.findByParams(new Guide(touristId)).get(0).getId();
         return ResultUtil.Success(orderService.findByParams(new Order(guideId)));
+    }
+
+
+    /**
+     * 保存导游位置
+     * @param longitude
+     * @param latitude
+     * @param touristId
+     * @return
+     */
+    @PostMapping("/saveLocation")
+    @ApiOperation("保存导游位置")
+    public ResultDTO saveLocation(Double longitude,Double latitude,Long touristId){
+        guideGeoService.saveGuideLocation(new Location(touristId.toString(),longitude,latitude));
+        return ResultUtil.Success();
+    }
+
+    @GetMapping("/getHisRouteAndVideo")
+    public ResultDTO getHisRouteAndVideo(Long touristId) throws Exception{
+        Long guideid = guideService.findByParams(new Guide(touristId)).get(0).getId();
+        List<MsgDTO> msgDTOS = new ArrayList<>();
+        for(Route r:routeService.findByParams(new Route(guideid))){
+            msgDTOS.add(new MsgDTO(r,videoService.get(r.getVideoId())));
+        }
+        return ResultUtil.Success(msgDTOS);
     }
 }

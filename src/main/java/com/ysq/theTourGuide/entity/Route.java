@@ -1,6 +1,8 @@
 package com.ysq.theTourGuide.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,8 @@ import javax.persistence.Id;
 import java.math.BigDecimal;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Route {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -108,4 +112,8 @@ public class Route {
     public static final String DESCRIBE = "describe";
 
     public static final String GUIDE_ID = "guideId";
+
+    public Route(Long guideId){
+        this.guideId = guideId;
+    }
 }
