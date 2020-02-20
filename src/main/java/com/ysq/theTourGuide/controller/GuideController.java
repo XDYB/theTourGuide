@@ -45,6 +45,9 @@ public class GuideController {
     @Autowired
     GuideGeoService guideGeoService;
 
+    @Autowired
+    ScenicService scenicService;
+
     /**
      * 注册成为导游
      * @param guide
@@ -214,7 +217,14 @@ public class GuideController {
         return ResultUtil.Success();
     }
 
+    /**
+     * 得到路线以及视频
+     * @param touristId
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/getHisRouteAndVideo")
+    @ApiOperation("得到路线以及视频")
     public ResultDTO getHisRouteAndVideo(Long touristId) throws Exception{
         Long guideid = guideService.findByParams(new Guide(touristId)).get(0).getId();
         List<MsgDTO> msgDTOS = new ArrayList<>();
@@ -222,5 +232,18 @@ public class GuideController {
             msgDTOS.add(new MsgDTO(r,videoService.get(r.getVideoId())));
         }
         return ResultUtil.Success(msgDTOS);
+    }
+
+
+    /**
+     * 得到某城市的景区
+     * @param cityName
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getScenic")
+    @ApiOperation("得到某城市的景区")
+    public ResultDTO getScenic(String cityName) throws Exception{
+        return ResultUtil.Success(scenicService.findByParams(new Scenic(cityName)));
     }
 }
