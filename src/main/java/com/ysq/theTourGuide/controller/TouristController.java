@@ -302,7 +302,12 @@ public class TouristController {
     @ApiImplicitParam(name = "videoId",value = "视频id",paramType = "query",dataType = "Long")
     public ResultDTO likeVideo(Long videoId,Long touristId)throws Exception{
         if(likeVideoService.findByParams(new LikeVideo(videoId,touristId)).size()==0){
-            int beforeLikeNums = videoService.get(videoId).getLikeNums();
+            int beforeLikeNums = 0;
+            try {
+                beforeLikeNums = videoService.get(videoId).getLikeNums();
+            } catch (Exception e) {
+                beforeLikeNums = 0;
+            }
             videoService.update(new Video(videoId,beforeLikeNums+1));
             return ResultUtil.Success(likeVideoService.save(new LikeVideo(videoId,touristId)));
         }else {
@@ -366,7 +371,12 @@ public class TouristController {
     @ApiOperation("给评论点赞")
     public ResultDTO likeComment(Long commentId,Long touristId)throws Exception{
         if(likeCommentService.findByParams(new LikeComment(touristId,commentId)).size()==0){
-            int beforeLikeNums = commentService.get(commentId).getLikeNums();
+            int beforeLikeNums = 0;
+            try {
+                beforeLikeNums = commentService.get(commentId).getLikeNums();
+            } catch (Exception e) {
+                beforeLikeNums = 0;
+            }
             commentService.update(new Comment(commentId,beforeLikeNums+1));
             return ResultUtil.Success(likeCommentService.save(new LikeComment(touristId,commentId)));
         }else {
