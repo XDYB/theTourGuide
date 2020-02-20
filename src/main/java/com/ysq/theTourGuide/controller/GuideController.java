@@ -99,7 +99,10 @@ public class GuideController {
         Long guideId = guideService.findByParams(new Guide(touristId)).get(0).getId();
         route.setGuideId(guideId);
         video.setGuideId(guideId);
-        return ResultUtil.Success(new PostMsgDTO(routeService.save(route),videoService.save(video)));
+        Video saveVideo = videoService.save(video);
+        route.setVideoId(saveVideo.getId());
+        Route saveRoute = routeService.save(route);
+        return ResultUtil.Success(new PostMsgDTO(saveRoute,saveVideo));
     }
 
 

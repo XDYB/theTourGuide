@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Data
@@ -12,6 +14,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 public class Message {
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "tourist_id")

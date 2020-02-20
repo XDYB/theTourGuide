@@ -6,6 +6,7 @@
       WARNING - @mbg.generated
     -->
     <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="video_id" property="videoId" jdbcType="BIGINT" />
     <result column="line" property="line" jdbcType="VARCHAR" />
     <result column="time" property="time" jdbcType="VARCHAR" />
     <result column="noss" property="noss" jdbcType="INTEGER" />

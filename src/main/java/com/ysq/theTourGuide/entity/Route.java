@@ -3,13 +3,20 @@ package com.ysq.theTourGuide.entity;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigDecimal;
 
 @Data
 public class Route {
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
+
+
+    @Column(name = "video_id")
+    private Long videoId;
 
     /**
      * 路线

@@ -2,14 +2,13 @@ package com.ysq.theTourGuide.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Table(name = "scenic_spot")
 public class ScenicSpot {
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     /**
