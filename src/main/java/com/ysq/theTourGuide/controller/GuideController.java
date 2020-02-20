@@ -94,12 +94,11 @@ public class GuideController {
             @ApiImplicitParam(value = "景点个数",name = "noss",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "经典景点个数",name = "nosss",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "是否购物",name = "hShop",dataType = "Boolean",paramType = "query"),
-            @ApiImplicitParam(value = "语言",name = "language",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "人数上限",name = "nOP",dataType = "int",paramType = "query"),
             @ApiImplicitParam(value = "价格",name = "price",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "优惠类型id,减免为1，折扣为2",name = "discountTypeId",dataType = "int",paramType = "query"),
             @ApiImplicitParam(value = "优惠额度",name = "discountValue",dataType = "int",paramType = "query"),
-            @ApiImplicitParam(value = "服务描述",name = "describe",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(value = "服务描述",name = "r_describe",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "路线id",name = "routeId",dataType = "Long",paramType = "query"),
             @ApiImplicitParam(value = "景区id",name = "scenicId",dataType = "Long",paramType = "query"),
             @ApiImplicitParam(value = "视频地址",name = "videoUrl",dataType = "String",paramType = "query"),
@@ -112,6 +111,8 @@ public class GuideController {
         Video saveVideo = videoService.save(video);
         route.setVideoId(saveVideo.getId());
         Route saveRoute = routeService.save(route);
+        saveVideo.setRouteId(saveRoute.getId());
+        videoService.update(saveVideo);
         return ResultUtil.Success(new MsgDTO(saveRoute,saveVideo));
     }
 

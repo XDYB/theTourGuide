@@ -46,11 +46,6 @@ public class Guide {
     private Integer level;
 
     /**
-     * 语言
-     */
-    private String language;
-
-    /**
      * 导游证号
      */
     @Column(name = "the_guide_number")
@@ -69,7 +64,7 @@ public class Guide {
     /**
      * 评分
      */
-    private String grade;
+    private Integer grade;
 
     /**
      * 导游年份
@@ -110,7 +105,7 @@ public class Guide {
 
     public static final String LEVEL = "level";
 
-    public static final String LANGUAGE = "language";
+    public static final String G_LANGUAGE = "gLanguage";
 
     public static final String THE_GUIDE_NUMBER = "theGuideNumber";
 
@@ -140,12 +135,11 @@ public class Guide {
         this.phone = g.getPhone();
         this.touristCertificateUrl = g.getTouristCertificateUrl();
         this.level = g.getLevel();
-        this.language = g.getLanguage();
         this.theGuideNumber = g.getGuide_number();
         this.organization = g.getOrganization();
         this.date = g.getDate();
         this.fansNums = 0;
-        this.grade = "";
+        this.grade = 0;
         this.years = "0";
         this.state = 0;
     }
