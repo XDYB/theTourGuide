@@ -1,16 +1,8 @@
 package com.ysq.theTourGuide.utils;
 
-import com.ysq.theTourGuide.service.ScoreRuleService;
-import com.ysq.theTourGuide.service.ScoreTypeService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 public class ScoreUtil {
 
-    @Autowired
-    ScoreRuleService scoreRuleService;
 
-    @Autowired
-    ScoreTypeService scoreTypeService;
 
     public static Double getScore(Integer guideLevel,Long videoNums,Long orderNums,Integer likeNums){
         return 0.5*getGuideLevelScore(guideLevel) +
