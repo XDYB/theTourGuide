@@ -2,5 +2,9 @@ server:
   port: 7331
 
 spring:
+  servlet:
+    multipart:
+      max-request-size: 10GB
+      max-file-size: 1GB
   profiles:
     active: dev
