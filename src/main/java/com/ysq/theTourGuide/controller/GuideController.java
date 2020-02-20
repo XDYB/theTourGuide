@@ -5,6 +5,7 @@ import com.ysq.theTourGuide.base.util.ResultUtil;
 import com.ysq.theTourGuide.config.ErrorCode;
 import com.ysq.theTourGuide.dto.GuideDTO;
 import com.ysq.theTourGuide.dto.GuideResiterDTO;
+import com.ysq.theTourGuide.dto.PostMsgDTO;
 import com.ysq.theTourGuide.entity.*;
 import com.ysq.theTourGuide.service.*;
 import io.swagger.annotations.ApiImplicitParam;
@@ -72,6 +73,8 @@ public class GuideController {
     /**
      * 发布信息
      * @param route
+     * @param video
+     * @param touristId
      * @return
      */
     @PostMapping("/postRoute")
@@ -82,38 +85,24 @@ public class GuideController {
             @ApiImplicitParam(value = "景点个数",name = "noss",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "经典景点个数",name = "nosss",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "是否购物",name = "hShop",dataType = "Boolean",paramType = "query"),
-            @ApiImplicitParam(value = "语言",name = "language",dataType = "Boolean",paramType = "query"),
-            @ApiImplicitParam(value = "人数上限",name = "nOP",dataType = "Boolean",paramType = "query"),
-            @ApiImplicitParam(value = "价格",name = "price",dataType = "Boolean",paramType = "query"),
-            @ApiImplicitParam(value = "优惠类型id",name = "discountTypeId",dataType = "Boolean",paramType = "query"),
-            @ApiImplicitParam(value = "优惠额度",name = "discountValue",dataType = "Boolean",paramType = "query"),
+            @ApiImplicitParam(value = "语言",name = "language",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(value = "人数上限",name = "nOP",dataType = "int",paramType = "query"),
+            @ApiImplicitParam(value = "价格",name = "price",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(value = "优惠类型id,减免为1，折扣为2",name = "discountTypeId",dataType = "int",paramType = "query"),
+            @ApiImplicitParam(value = "优惠额度",name = "discountValue",dataType = "int",paramType = "query"),
             @ApiImplicitParam(value = "描述",name = "describe",dataType = "Boolean",paramType = "query"),
-    })
-    public ResultDTO postMsg(Route route, Long touristId )throws Exception{
-        Long guideId = guideService.findByParams(new Guide(touristId)).get(0).getId();
-        route.setGuideId(guideId);
-        return ResultUtil.Success(routeService.save(route));
-    }
-
-    /**
-     * 上传视频
-     * @param video
-     * @param touristId
-     * @return
-     * @throws Exception
-     */
-    @PostMapping("/postVideo")
-    @ApiOperation("上传视频")
-    @ApiImplicitParams({
             @ApiImplicitParam(value = "路线id",name = "routeId",dataType = "Boolean",paramType = "query"),
             @ApiImplicitParam(value = "景区id",name = "scenicId",dataType = "Boolean",paramType = "query"),
             @ApiImplicitParam(value = "视频地址",name = "videoUrl",dataType = "Boolean",paramType = "query"),
     })
-    public ResultDTO postVideo(Video video,Long touristId )throws Exception{
+    public ResultDTO postMsg(Route route, Video video,Long touristId )throws Exception{
         Long guideId = guideService.findByParams(new Guide(touristId)).get(0).getId();
+        route.setGuideId(guideId);
         video.setGuideId(guideId);
-        return ResultUtil.Success(videoService.save(video));
+        return ResultUtil.Success(new PostMsgDTO(routeService.save(route),videoService.save(video)));
     }
+
+
 
     /**
      * 获得导游信息
