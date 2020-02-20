@@ -57,7 +57,7 @@ mybatis:
 
 logging:
   level:
-    com.ysq.theToutGuide.mapper: DEBUG
+    com.ysq.theTourGuide.mapper: DEBUG
 
 app:
   appid: wx38b8bbe22ed59863
