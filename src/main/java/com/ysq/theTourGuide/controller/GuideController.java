@@ -99,7 +99,7 @@ public class GuideController {
             @ApiImplicitParam(value = "描述",name = "describe",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "路线id",name = "routeId",dataType = "Long",paramType = "query"),
             @ApiImplicitParam(value = "景区id",name = "scenicId",dataType = "Long",paramType = "query"),
-            @ApiImplicitParam(value = "视频地址",name = "videoUrl",dataType = "Boolean",paramType = "query"),
+            @ApiImplicitParam(value = "视频地址",name = "videoUrl",dataType = "String",paramType = "query"),
     })
     public ResultDTO postMsg(Route route, Video video,Long touristId )throws Exception{
         Long guideId = guideService.findByParams(new Guide(touristId)).get(0).getId();
