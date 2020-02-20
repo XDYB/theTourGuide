@@ -48,6 +48,11 @@ public class Video {
     @Column(name = "like_nums")
     private Integer likeNums;
 
+    /**
+     * 描述
+     */
+    private String vDescribe;
+
     public static final String ID = "id";
 
     public static final String GUIDE_ID = "guideId";
@@ -57,6 +62,8 @@ public class Video {
     public static final String VIDEO_URL = "videoUrl";
 
     public static final String LIKE_NUMS = "likeNums";
+
+    public static final String VDESCRIBE = "vDescribe";
 
     public Video(Long guideId){
         this.guideId = guideId;

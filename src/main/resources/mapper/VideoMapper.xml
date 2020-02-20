@@ -11,5 +11,6 @@
     <result column="scenic_id" property="scenicId" jdbcType="BIGINT" />
     <result column="video_url" property="videoUrl" jdbcType="VARCHAR" />
     <result column="like_nums" property="likeNums" jdbcType="INTEGER" />
+    <result column="describe" property="vDescribe" jdbcType="VARCHAR" />
   </resultMap>
 </mapper>
