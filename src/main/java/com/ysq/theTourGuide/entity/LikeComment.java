@@ -31,4 +31,5 @@ public class LikeComment {
         this.touristId = touristId;
         this.commentId = commentId;
     }
+
 }

@@ -9,7 +9,7 @@
     <result column="video_id" property="videoId" jdbcType="BIGINT" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="tourist_id" property="touristId" jdbcType="BIGINT" />
-    <result column="like_nums" property="likeNums" jdbcType="VARCHAR" />
+    <result column="like_nums" property="likeNums" jdbcType="INTEGER" />
     <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
     <result column="state" property="state" jdbcType="INTEGER" />
   </resultMap>

@@ -68,4 +68,9 @@ public class Video {
     public Video(Long guideId){
         this.guideId = guideId;
     }
+
+    public Video(Long id,Integer likeNums){
+        this.id = id;
+        this.likeNums = likeNums;
+    }
 }

@@ -129,6 +129,11 @@ public class Guide {
         this.touristId = touristId;
     }
 
+    public Guide(Long id,Integer likeNums){
+        this.id = id;
+        this.likeNums = likeNums;
+    }
+
     public Guide(GuideResiterDTO g){
         this.touristId = g.getTouristId();
         this.name = g.getName();

@@ -301,7 +301,9 @@ public class TouristController {
     @ApiOperation("给视频点赞")
     @ApiImplicitParam(name = "videoId",value = "视频id",paramType = "query",dataType = "Long")
     public ResultDTO likeVideo(Long videoId,Long touristId)throws Exception{
-        if(likeVideoService.findByParams(new LikeVideo(videoId)).size()==0){
+        if(likeVideoService.findByParams(new LikeVideo(videoId,touristId)).size()==0){
+            int beforeLikeNums = videoService.get(videoId).getLikeNums();
+            videoService.update(new Video(videoId,beforeLikeNums+1));
             return ResultUtil.Success(likeVideoService.save(new LikeVideo(videoId,touristId)));
         }else {
             return ResultUtil.Error(ErrorCode.ISEXIST);
@@ -351,6 +353,25 @@ public class TouristController {
             );
         }
         return ResultUtil.Success(commentDTOS);
+    }
+
+    /**
+     * 给评论点赞
+     * @param commentId
+     * @param touristId
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/likeComment")
+    @ApiOperation("给评论点赞")
+    public ResultDTO likeComment(Long commentId,Long touristId)throws Exception{
+        if(likeCommentService.findByParams(new LikeComment(touristId,commentId)).size()==0){
+            int beforeLikeNums = commentService.get(commentId).getLikeNums();
+            commentService.update(new Comment(commentId,beforeLikeNums+1));
+            return ResultUtil.Success(likeCommentService.save(new LikeComment(touristId,commentId)));
+        }else {
+            return ResultUtil.Error(ErrorCode.ISEXIST);
+        }
     }
 
     /**

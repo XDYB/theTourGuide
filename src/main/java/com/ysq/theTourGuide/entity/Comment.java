@@ -39,7 +39,7 @@ public class Comment {
      * 点赞数
      */
     @Column(name = "like_nums")
-    private String likeNums;
+    private Integer likeNums;
 
     /**
      * 发布时间
@@ -67,5 +67,10 @@ public class Comment {
 
     public Comment(Long videoId){
         this.videoId = videoId;
+    }
+
+    public Comment(Long commentId,Integer likeNums){
+        this.id = commentId;
+        this.likeNums = likeNums;
     }
 }
