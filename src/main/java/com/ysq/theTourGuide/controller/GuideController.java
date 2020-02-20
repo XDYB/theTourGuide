@@ -98,7 +98,7 @@ public class GuideController {
             @ApiImplicitParam(value = "价格",name = "price",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "优惠类型id,减免为1，折扣为2",name = "discountTypeId",dataType = "int",paramType = "query"),
             @ApiImplicitParam(value = "优惠额度",name = "discountValue",dataType = "int",paramType = "query"),
-            @ApiImplicitParam(value = "服务描述",name = "r_describe",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(value = "服务描述",name = "rDescribe",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "路线id",name = "routeId",dataType = "Long",paramType = "query"),
             @ApiImplicitParam(value = "景区id",name = "scenicId",dataType = "Long",paramType = "query"),
             @ApiImplicitParam(value = "视频地址",name = "videoUrl",dataType = "String",paramType = "query"),
