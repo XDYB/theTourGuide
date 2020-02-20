@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostMsgDTO {
+public class MsgDTO {
 
     private Route route;
     private Video video;
