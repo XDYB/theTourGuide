@@ -9,6 +9,7 @@ import com.ysq.theTourGuide.config.ErrorCode;
 import com.ysq.theTourGuide.config.OrderState;
 import com.ysq.theTourGuide.config.RecommendAttrs;
 import com.ysq.theTourGuide.dto.CommentDTO;
+import com.ysq.theTourGuide.dto.RouteDTO;
 import com.ysq.theTourGuide.dto.UserInfo;
 import com.ysq.theTourGuide.dto.VideoDTO;
 import com.ysq.theTourGuide.entity.*;
@@ -78,6 +79,9 @@ public class TouristController {
 
     @Autowired
     MessageService messageService;
+
+    @Autowired
+    RouteService routeService;
 
 //    @PostMapping("/login")
     public ResultDTO login(String encryptedData, String iv, String code){
@@ -459,6 +463,20 @@ public class TouristController {
         Byte state = 1;
         messageService.update(new Message(messageId,state));
         return ResultUtil.Success(message);
+    }
+
+    /**
+     * 获取路线信息
+     * @param videoId
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getRoute")
+    @ApiOperation("获取路线信息")
+    public ResultDTO getRoute(Long videoId)throws Exception{
+        Video video = videoService.get(videoId);
+        return ResultUtil.Success(new RouteDTO(guideService.get(video.getGuideId()),
+                routeService.get(video.getRouteId())));
     }
 //
 }
