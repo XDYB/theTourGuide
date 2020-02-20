@@ -475,8 +475,10 @@ public class TouristController {
     @ApiOperation("获取路线信息")
     public ResultDTO getRoute(Long videoId)throws Exception{
         Video video = videoService.get(videoId);
-        return ResultUtil.Success(new RouteDTO(guideService.get(video.getGuideId()),
-                routeService.get(video.getRouteId())));
+        Guide guide = guideService.get(video.getGuideId());
+        return ResultUtil.Success(new RouteDTO(guide,
+                routeService.get(video.getRouteId()),
+                touristService.get(guide.getTouristId())));
     }
 //
 }

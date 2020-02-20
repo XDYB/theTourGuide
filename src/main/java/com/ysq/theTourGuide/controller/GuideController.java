@@ -91,6 +91,7 @@ public class GuideController {
     @ApiOperation("发布信息")
     @ApiImplicitParams({
             @ApiImplicitParam(value = "路线",name = "line",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(value = "语言",name = "gLanguage",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "时长",name = "time",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "景点个数",name = "noss",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "经典景点个数",name = "nosss",dataType = "String",paramType = "query"),
@@ -109,6 +110,7 @@ public class GuideController {
         Long guideId = guideService.findByParams(new Guide(touristId)).get(0).getId();
         route.setGuideId(guideId);
         video.setGuideId(guideId);
+        video.setLikeNums(0);
         Video saveVideo = videoService.save(video);
         route.setVideoId(saveVideo.getId());
         Route saveRoute = routeService.save(route);
