@@ -254,9 +254,13 @@ public class TouristController {
     })
     public ResultDTO booking(TheOrder order)throws Exception{
         order.setState("222");
-        TheOrder save = theOrderService.save(order);
-        messageService.save(new Message(save.getTouristId(),"订单号为" + save.getId() + "的订单预约成功"));
-        return ResultUtil.Success(save);
+        if (theOrderService.findByParams(new TheOrder(order.getTouristId(),order.getRouteId(),order.getTime())).size()==0) {
+            TheOrder save = theOrderService.save(order);
+            messageService.save(new Message(save.getTouristId(),"订单号为" + save.getId() + "的订单预约成功"));
+            return ResultUtil.Success(save);
+        }else{
+            return ResultUtil.Error(ErrorCode.ISEXIST);
+        }
     }
 
     /**
@@ -333,6 +337,7 @@ public class TouristController {
     public ResultDTO comment(Comment comment,Long touristId)throws Exception{
         comment.setTouristId(touristId);
         comment.setCreatetime(new Date());
+        comment.setState(1);
         return ResultUtil.Success(commentService.save(comment));
     }
 

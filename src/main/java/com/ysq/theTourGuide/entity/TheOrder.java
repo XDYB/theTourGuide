@@ -123,6 +123,12 @@ public class TheOrder {
         this.state = state;
     }
 
+    public TheOrder(Long touristId,Long routeId,Date time){
+        this.touristId = touristId;
+        this.routeId = routeId;
+        this.time = time;
+    }
+
 
 
 }
