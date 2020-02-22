@@ -511,5 +511,24 @@ public class TouristController {
         Guide guide = guideService.get(theOrder.getGuideId());
         return ResultUtil.Success(new ReturnOrderDTO(theOrder,guide,touristService.get(guide.getTouristId())));
     }
+
+    /**
+     * 获取我的订单列表
+     * @param touristId
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getOrders")
+    @ApiOperation("获取我的订单列表")
+    public ResultDTO getOrders(Long touristId)throws Exception{
+        List<TheOrderDTO> theOrderDTOS = new ArrayList<>();
+        TheOrder theOrder = new TheOrder();
+        theOrder.setTouristId(touristId);
+        for (TheOrder t:theOrderService.findByParams(theOrder)) {
+            Route route = routeService.get(t.getRouteId());
+            theOrderDTOS.add(new TheOrderDTO(t,route.getLine(),route.getRDay(),route.getRNight()));
+        }
+        return ResultUtil.Success(theOrderDTOS);
+    }
 //
 }

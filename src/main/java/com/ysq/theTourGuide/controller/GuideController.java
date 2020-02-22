@@ -156,13 +156,13 @@ public class GuideController {
     @PostMapping("/updateGuideMsg")
     @ApiOperation("修改导游信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(value = "姓名",name = "name",dataType = "Boolean",paramType = "query"),
-            @ApiImplicitParam(value = "电话",name = "phone",dataType = "Boolean",paramType = "query"),
-            @ApiImplicitParam(value = "导游证",name = "touristCertificateUrl",dataType = "Boolean",paramType = "query"),
-            @ApiImplicitParam(value = "导游证号",name = "theGuideNumber",dataType = "Boolean",paramType = "query"),
-            @ApiImplicitParam(value = "所在机构",name = "organization",dataType = "Boolean",paramType = "query"),
-            @ApiImplicitParam(value = "期限",name = "date",dataType = "Boolean",paramType = "query"),
-            @ApiImplicitParam(value = "导游年份",name = "years",dataType = "Boolean",paramType = "query"),
+            @ApiImplicitParam(value = "姓名",name = "name",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(value = "电话",name = "phone",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(value = "导游证",name = "touristCertificateUrl",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(value = "导游证号",name = "theGuideNumber",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(value = "所在机构",name = "organization",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(value = "期限",name = "date",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(value = "导游年份",name = "years",dataType = "String",paramType = "query"),
     })
     public ResultDTO updateGuideMsg(GuideDTO guideDTO,Long touristId)throws Exception{
         Guide guide = new Guide();
