@@ -12,5 +12,6 @@
     <result column="video_url" property="videoUrl" jdbcType="VARCHAR" />
     <result column="like_nums" property="likeNums" jdbcType="INTEGER" />
     <result column="v_describe" property="vDescribe" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="TIMESTAMP" />
   </resultMap>
 </mapper>

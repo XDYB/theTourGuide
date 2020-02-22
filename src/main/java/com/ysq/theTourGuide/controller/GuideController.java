@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -112,6 +113,7 @@ public class GuideController {
         route.setGuideId(guideId);
         video.setGuideId(guideId);
         video.setLikeNums(0);
+        video.setDate(new Date());
         Video saveVideo = videoService.save(video);
         route.setVideoId(saveVideo.getId());
         Route saveRoute = routeService.save(route);
