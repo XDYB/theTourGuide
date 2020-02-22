@@ -353,7 +353,7 @@ public class TouristController {
     @ApiImplicitParam(name = "videoId",value = "视频id",paramType = "query",dataType = "Long")
     public ResultDTO getComments(Long videoId,Long touristId)throws Exception{
         List<CommentDTO> commentDTOS = new ArrayList<>();
-        for(Comment c:commentService.findAll()){
+        for(Comment c:commentService.findByParams(new Comment(videoId))){
             Tourist tourist = touristService.get(c.getTouristId());
             boolean isLike = likeCommentService.findByParams(new LikeComment(touristId,c.getId())).size()==0 ? false : true;
             commentDTOS.add(new CommentDTO(tourist.getAvatarUrl(),
