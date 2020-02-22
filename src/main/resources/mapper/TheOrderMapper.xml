@@ -11,7 +11,7 @@
     <result column="guide_id" jdbcType="BIGINT" property="guideId" />
     <result column="t_start" jdbcType="VARCHAR" property="tStart" />
     <result column="n_o_p" jdbcType="INTEGER" property="nOP" />
-    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
     <result column="meet_time" jdbcType="TIMESTAMP" property="meetTime" />
     <result column="state" jdbcType="VARCHAR" property="state" />
     <result column="t_name" jdbcType="VARCHAR" property="tName" />

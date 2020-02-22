@@ -92,7 +92,8 @@ public class GuideController {
     @ApiImplicitParams({
             @ApiImplicitParam(value = "路线",name = "line",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "语言",name = "gLanguage",dataType = "String",paramType = "query"),
-            @ApiImplicitParam(value = "时长",name = "time",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(value = "时长_天数",name = "rDay",dataType = "Integer",paramType = "query"),
+            @ApiImplicitParam(value = "时长_夜数",name = "rNight",dataType = "Integer",paramType = "query"),
             @ApiImplicitParam(value = "景点个数",name = "noss",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "经典景点个数",name = "nosss",dataType = "String",paramType = "query"),
             @ApiImplicitParam(value = "是否购物",name = "hShop",dataType = "Boolean",paramType = "query"),

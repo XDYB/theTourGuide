@@ -28,9 +28,14 @@ public class Route {
     private String line;
 
     /**
-     * 时长
+     * 时长_天数
      */
-    private String time;
+    private Integer rDay;
+
+    /**
+     * 时长_夜数
+     */
+    private Integer rNight;
 
     /**
      * 景点个数

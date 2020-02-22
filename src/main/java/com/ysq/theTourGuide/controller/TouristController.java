@@ -8,10 +8,7 @@ import com.ysq.theTourGuide.base.util.ResultUtil;
 import com.ysq.theTourGuide.config.ErrorCode;
 import com.ysq.theTourGuide.config.OrderState;
 import com.ysq.theTourGuide.config.RecommendAttrs;
-import com.ysq.theTourGuide.dto.CommentDTO;
-import com.ysq.theTourGuide.dto.RouteDTO;
-import com.ysq.theTourGuide.dto.UserInfo;
-import com.ysq.theTourGuide.dto.VideoDTO;
+import com.ysq.theTourGuide.dto.*;
 import com.ysq.theTourGuide.entity.*;
 import com.ysq.theTourGuide.service.*;
 import com.ysq.theTourGuide.service.redis.IGeoService;
@@ -249,8 +246,8 @@ public class TouristController {
             @ApiImplicitParam(name = "guideId",value = "导游id",paramType = "query",dataType = "Long"),
             @ApiImplicitParam(name = "tStart",value = "出发点",paramType = "query",dataType = "String"),
             @ApiImplicitParam(name = "nOP",value = "人数",paramType = "query",dataType = "Integer"),
-            @ApiImplicitParam(name = "time",value = "时长",paramType = "query",dataType = "String"),
-            @ApiImplicitParam(name = "meetTime",value = "碰面时间",paramType = "query",dataType = "Date"),
+            @ApiImplicitParam(name = "time",value = "开始日期，格式为'yyyy-MM-dd",paramType = "query",dataType = "Date"),
+            @ApiImplicitParam(name = "meetTime",value = "碰面时间,格式为‘yyyy-MM-dd HH:mm:ss",paramType = "query",dataType = "Date"),
             @ApiImplicitParam(name = "tName",value = "名字",paramType = "query",dataType = "String"),
             @ApiImplicitParam(name = "idNumber",value = "身份证",paramType = "query",dataType = "String"),
             @ApiImplicitParam(name = "phone",value = "电话",paramType = "query",dataType = "String"),
@@ -479,6 +476,35 @@ public class TouristController {
         return ResultUtil.Success(new RouteDTO(guide,
                 routeService.get(video.getRouteId()),
                 touristService.get(guide.getTouristId())));
+    }
+
+
+    /**
+     * 返回该路线不能选择的天数
+     */
+    @GetMapping("/getSelectDays")
+    @ApiOperation("返回该路线不能选择的天数")
+    public ResultDTO getSelectDays(Long routeId)throws Exception{
+        Route route = routeService.get(routeId);
+        List list = new ArrayList();
+        for(TheOrder t:theOrderService.findByParams(new TheOrder(route.getGuideId(),"222"))){
+            list.add(MyMathUtil.returnSelectDays(t.getTime(),route.getRDay()));
+        }
+        return ResultUtil.Success(list);
+    }
+
+    /**
+     * 得到订单详情
+     * @param orderId
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getOrder")
+    @ApiOperation("得到订单详情")
+    public ResultDTO getOrder(Long orderId)throws Exception{
+        TheOrder theOrder = theOrderService.get(orderId);
+        Guide guide = guideService.get(theOrder.getGuideId());
+        return ResultUtil.Success(new ReturnOrderDTO(theOrder,guide,touristService.get(guide.getTouristId())));
     }
 //
 }

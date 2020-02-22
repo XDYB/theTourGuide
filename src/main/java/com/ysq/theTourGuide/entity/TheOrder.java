@@ -1,5 +1,6 @@
 package com.ysq.theTourGuide.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -52,13 +53,15 @@ public class TheOrder {
     /**
      * 预定时间
      */
-    private String time;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date time;
 
     /**
      * 碰面时间
      */
     @Column(name = "meet_time")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date meetTime;
 
     /**
@@ -119,5 +122,7 @@ public class TheOrder {
         this.guideId = guideId;
         this.state = state;
     }
+
+
 
 }
