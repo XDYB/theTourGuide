@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -78,9 +79,9 @@ public class Guide {
     private Integer likeNums;
 
     /**
-     * 价格
+     * 申请时间
      */
-    private Integer price;
+    private Date time;
 
     /**
      * 粉丝数
@@ -119,7 +120,7 @@ public class Guide {
 
     public static final String LIKE_NUMS = "likeNums";
 
-    public static final String PRICE = "price";
+    public static final String TIME = "time";
 
     public static final String FANS_NUMS = "fansNums";
 
@@ -149,5 +150,15 @@ public class Guide {
         this.grade = 0.00;
         this.years = "0";
         this.state = 0;
+        this.time = new Date();
+    }
+
+    public Guide(Integer state){
+        this.state = state;
+    }
+
+    public Guide(Long guideId,Integer state){
+        this.id = guideId;
+        this.state = state;
     }
 }

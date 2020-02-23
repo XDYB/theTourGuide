@@ -1,16 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ysq.theTourGuide.mapper.ScenicMapper" >
-  <resultMap id="BaseResultMap" type="com.ysq.theTourGuide.entity.Scenic" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ysq.theTourGuide.mapper.ScenicMapper">
+  <resultMap id="BaseResultMap" type="com.ysq.theTourGuide.entity.Scenic">
     <!--
       WARNING - @mbg.generated
     -->
-    <result column="id" property="id" jdbcType="BIGINT" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="title" property="title" jdbcType="VARCHAR" />
-    <result column="province" property="province" jdbcType="VARCHAR" />
-    <result column="city" property="city" jdbcType="VARCHAR" />
-    <result column="longitude" property="longitude" jdbcType="DOUBLE" />
-    <result column="latitude" property="latitude" jdbcType="DOUBLE" />
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="longitude" jdbcType="DOUBLE" property="longitude" />
+    <result column="latitude" jdbcType="DOUBLE" property="latitude" />
+    <result column="opening_time" jdbcType="VARCHAR" property="openingTime" />
+    <result column="policy" jdbcType="VARCHAR" property="policy" />
+    <result column="feature" jdbcType="VARCHAR" property="feature" />
+    <result column="warm_tip" jdbcType="VARCHAR" property="warmTip" />
+    <result column="administrator_id" jdbcType="INTEGER" property="administratorId" />
+    <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
   </resultMap>
+
+
 </mapper>

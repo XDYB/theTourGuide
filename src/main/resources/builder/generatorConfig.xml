@@ -35,13 +35,16 @@
 <!--        <table tableName="like_video"/>-->
 <!--        <table tableName="the_order"/>-->
 <!--        <table tableName="route"/>-->
-<!--        <table tableName="scenic"/>-->
+        <table tableName="scenic"/>
 <!--        <table tableName="comment"/>-->
 <!--        <table tableName="scenic_spot"/>-->
 <!--        <table tableName="like_comment"/>-->
 <!--        <table tableName="message"/>-->
-        <table tableName="score_rule"/>
-        <table tableName="score_type"/>
+<!--        <table tableName="score_rule"/>-->
+<!--        <table tableName="score_type"/>-->
+<!--        <table tableName="administrator"/>-->
+<!--        <table tableName="administrator_type"/>-->
+<!--        <table tableName="administrator_authority"/>-->
 
     </context>
 </generatorConfiguration>

@@ -4,7 +4,10 @@ public enum ErrorCode {
     INVALID_PARAMETERS("202","未接受到正确的参数或未接受到参数"),
     UNKNOWERROR("203","未知错误"),
     NOEXIST("204","你操作的实体不存在"),
-    ISEXIST("205","已存在")
+    ISEXIST("205","已存在"),
+    ERROR_PSW("206","密码错误"),
+    ADMINISTRATOR_NOEXIST("207","账户不存在"),
+    LIMITED_AUTHORITY("208","权限不够")
     ;
     private String code;
     private String msg;

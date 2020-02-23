@@ -132,7 +132,7 @@ public class GuideController {
      */
     @GetMapping("/getGuideMsg")
     @ApiOperation("获得导游信息")
-    public ResultDTO getGuideMsg(Long touristId )throws Exception{
+    public ResultDTO getGuideMsg(Long touristId)throws Exception{
         Long guideId = guideService.findByParams(new Guide(touristId)).get(0).getId();
         Integer allLikeNums = 0;
         for(Video v: videoService.findByParams(new Video(guideId))){

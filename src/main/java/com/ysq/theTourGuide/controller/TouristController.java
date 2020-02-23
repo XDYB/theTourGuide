@@ -530,5 +530,17 @@ public class TouristController {
         }
         return ResultUtil.Success(theOrderDTOS);
     }
+
+    /**
+     * 获取景点详情
+     * @param scenicId
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getScenicMsg")
+    @ApiOperation("获取景点详情")
+    public ResultDTO getScenicMsg(Long scenicId)throws Exception{
+        return ResultUtil.Success(scenicService.get(scenicId));
+    }
 //
 }

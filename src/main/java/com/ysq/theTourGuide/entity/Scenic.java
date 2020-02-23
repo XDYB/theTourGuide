@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,9 +23,9 @@ public class Scenic {
     private String name;
 
     /**
-     * 标题
+     * 详细位置
      */
-    private String title;
+    private String location;
 
     /**
      * 省份
@@ -46,11 +47,45 @@ public class Scenic {
      */
     private Double latitude;
 
+    /**
+     * 开放时间
+     */
+    @Column(name = "opening_time")
+    private String openingTime;
+
+    /**
+     * 优惠政策
+     */
+    private String policy;
+
+    /**
+     * 特色玩法
+     */
+    private String feature;
+
+    /**
+     * 温馨提示
+     */
+    @Column(name = "warm_tip")
+    private String warmTip;
+
+    /**
+     * 管理员id
+     */
+    @Column(name = "administrator_id")
+    private Integer administratorId;
+
+    /**
+     * 图片
+     */
+    @Column(name = "pic_url")
+    private String picUrl;
+
     public static final String ID = "id";
 
     public static final String NAME = "name";
 
-    public static final String TITLE = "title";
+    public static final String LOCATION = "location";
 
     public static final String PROVINCE = "province";
 
@@ -60,7 +95,23 @@ public class Scenic {
 
     public static final String LATITUDE = "latitude";
 
+    public static final String OPENING_TIME = "openingTime";
+
+    public static final String POLICY = "policy";
+
+    public static final String FEATURE = "feature";
+
+    public static final String WARM_TIP = "warmTip";
+
+    public static final String ADMINISTRATOR_ID = "administratorId";
+
+    public static final String PIC_URL = "picUrl";
+
     public Scenic(String city){
         this.city = city;
+    }
+
+    public Scenic(Integer administratorId){
+        this.administratorId = administratorId;
     }
 }
