@@ -247,6 +247,54 @@ public class ManagerController {
             List<Guide> result = new ArrayList<>();
             Guide guide = new Guide();
             guide.setName(attr);
+            guide.setState(0);
+            result.addAll(guideService.findByParams(guide));
+            Guide g = new Guide();
+            g.setPhone(attr);
+            g.setState(0);
+            result.addAll(guideService.findByParams(g));
+            return ResultUtil.Success(result);
+        }else{
+            return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
+        }
+    }
+
+
+    /**
+     * 获取所有通过导游信息
+     * @param administratorId
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getGuide")
+    public ResultDTO getGuide(Integer administratorId)throws Exception{
+        AdministratorAuthority administratorAuthority = administratorAuthorityService.get(
+                administratorTypeService.get(
+                        administratorService.get(administratorId).getTypeId()).getAuthorityId());
+        if(administratorAuthority.getManageGuide()){
+            return ResultUtil.Success(guideService.findByParams(new Guide(1)));
+        }else{
+            return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
+        }
+    }
+
+    /**
+     * 搜索审核通过的导游
+     * @param administratorId
+     * @param attr
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/findGuide")
+    @ApiOperation("搜索导游")
+    public ResultDTO findGuide(Integer administratorId,String attr)throws Exception{
+        AdministratorAuthority administratorAuthority = administratorAuthorityService.get(
+                administratorTypeService.get(
+                        administratorService.get(administratorId).getTypeId()).getAuthorityId());
+        if(administratorAuthority.getManageGuide()){
+            List<Guide> result = new ArrayList<>();
+            Guide guide = new Guide();
+            guide.setName(attr);
             result.addAll(guideService.findByParams(guide));
             Guide g = new Guide();
             g.setPhone(attr);
@@ -256,6 +304,7 @@ public class ManagerController {
             return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
         }
     }
+
 
     /**
      * 获取导游详情
@@ -318,6 +367,7 @@ public class ManagerController {
             return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
         }
     }
+
 
 
 }
