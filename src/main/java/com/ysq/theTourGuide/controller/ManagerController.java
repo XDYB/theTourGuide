@@ -115,6 +115,9 @@ public class ManagerController {
     @DeleteMapping("/deleteAdministrator")
     @ApiOperation("删除管理员")
     public ResultDTO deleteAdministrator(Integer administratorId,Integer deleteAdministratorId)throws Exception{
+        if(administratorId == deleteAdministratorId){
+            return ResultUtil.Error(ErrorCode.CANTDOIT);
+        }
         AdministratorType administratorType = administratorTypeService.get(
                 administratorService.get(administratorId).getTypeId());
         AdministratorAuthority administratorAuthority = administratorAuthorityService.get(administratorType

@@ -7,7 +7,8 @@ public enum ErrorCode {
     ISEXIST("205","已存在"),
     ERROR_PSW("206","密码错误"),
     ADMINISTRATOR_NOEXIST("207","账户不存在"),
-    LIMITED_AUTHORITY("208","权限不够")
+    LIMITED_AUTHORITY("208","权限不够"),
+    CANTDOIT("209","您无法这样子做");
     ;
     private String code;
     private String msg;
