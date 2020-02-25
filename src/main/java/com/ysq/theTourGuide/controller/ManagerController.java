@@ -355,7 +355,7 @@ public class ManagerController {
         AdministratorAuthority administratorAuthority = administratorAuthorityService.get(
                 administratorTypeService.get(
                         administratorService.get(administratorId).getTypeId()).getAuthorityId());
-        if(administratorAuthority.getManageGuide()){
+        if(administratorAuthority.getManageVideo()){
             return ResultUtil.Success(videoService.findByParams(new Video(guideId)));
         }else{
             return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
@@ -375,7 +375,7 @@ public class ManagerController {
         AdministratorAuthority administratorAuthority = administratorAuthorityService.get(
                 administratorTypeService.get(
                         administratorService.get(administratorId).getTypeId()).getAuthorityId());
-        if(administratorAuthority.getManageGuide()){
+        if(administratorAuthority.getManageOrder()){
             List<ManagerOrderDTO> managerOrderDTOS = new ArrayList<>();
             for(TheOrder o:theOrderService.findByParams(new TheOrder(guideId))){
                 Route r = routeService.get(o.getRouteId());
@@ -503,6 +503,48 @@ public class ManagerController {
                         administratorService.get(administratorId).getTypeId()).getAuthorityId());
         if(administratorAuthority.getInform()){
             return ResultUtil.Success(messageService.save(new Message(touristId,msg)));
+        }else {
+            return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
+        }
+    }
+
+    /**
+     * 删除导游视频
+     * @param administratorId
+     * @param videoId
+     * @return
+     * @throws Exception
+     */
+    @DeleteMapping("/removeVideo")
+    @ApiOperation("删除导游视频")
+    public ResultDTO removeVideo(Integer administratorId,Long videoId)throws Exception{
+        AdministratorAuthority administratorAuthority = administratorAuthorityService.get(
+                administratorTypeService.get(
+                        administratorService.get(administratorId).getTypeId()).getAuthorityId());
+        if(administratorAuthority.getManageVideo()){
+            videoService.deleteById(videoId);
+            return ResultUtil.Success();
+        }else {
+            return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
+        }
+    }
+
+    /**
+     * 取消认证
+     * @param administratorId
+     * @param guideId
+     * @return
+     * @throws Exception
+     */
+    @DeleteMapping("/removeGuide")
+    @ApiOperation("取消认证")
+    public ResultDTO removeGuide(Integer administratorId,Long guideId)throws Exception{
+        AdministratorAuthority administratorAuthority = administratorAuthorityService.get(
+                administratorTypeService.get(
+                        administratorService.get(administratorId).getTypeId()).getAuthorityId());
+        if(administratorAuthority.getManageGuide()){
+            guideService.deleteById(guideId);
+            return ResultUtil.Success();
         }else {
             return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
         }
