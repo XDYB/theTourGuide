@@ -76,6 +76,8 @@ public class Video {
 
     public static final String V_DESCRIBE = "vDescribe";
 
+    public static final String DATE = "date";
+
     public Video(Long guideId){
         this.guideId = guideId;
     }

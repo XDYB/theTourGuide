@@ -47,4 +47,9 @@ public class Administrator {
         this.typeId = typeId;
         this.state = 1;
     }
+
+    public Administrator(Integer typeId){
+        this.typeId = typeId;
+        this.state = 1;
+    }
 }

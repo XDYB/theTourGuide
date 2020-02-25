@@ -3,8 +3,10 @@ package com.ysq.theTourGuide.controller;
 import com.ysq.theTourGuide.base.dto.ResultDTO;
 import com.ysq.theTourGuide.base.util.ResultUtil;
 import com.ysq.theTourGuide.config.ErrorCode;
+import com.ysq.theTourGuide.dto.ManagerOrderDTO;
 import com.ysq.theTourGuide.entity.*;
 import com.ysq.theTourGuide.service.*;
+import com.ysq.theTourGuide.utils.MyMathUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,17 @@ public class ManagerController {
     @Autowired
     GuideService guideService;
 
+    @Autowired
+    VideoService videoService;
+
+    @Autowired
+    TheOrderService theOrderService;
+
+    @Autowired
+    RouteService routeService;
+
+    @Autowired
+    MessageService messageService;
     /**
      * 管理员登录
      * @param account
@@ -328,6 +341,51 @@ public class ManagerController {
         }
     }
 
+
+    /**
+     * 获取导游视频
+     * @param administratorId
+     * @param guideId
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getGuideVideos")
+    @ApiOperation("获取导游视频")
+    public ResultDTO getGuideVideos(Integer administratorId,Long guideId)throws Exception{
+        AdministratorAuthority administratorAuthority = administratorAuthorityService.get(
+                administratorTypeService.get(
+                        administratorService.get(administratorId).getTypeId()).getAuthorityId());
+        if(administratorAuthority.getManageGuide()){
+            return ResultUtil.Success(videoService.findByParams(new Video(guideId)));
+        }else{
+            return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
+        }
+    }
+
+    /**
+     * 获取导游订单
+     * @param administratorId
+     * @param guideId
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getGuideOrder")
+    @ApiOperation("获取导游订单")
+    public ResultDTO getGuideOrder(Integer administratorId,Long guideId)throws Exception{
+        AdministratorAuthority administratorAuthority = administratorAuthorityService.get(
+                administratorTypeService.get(
+                        administratorService.get(administratorId).getTypeId()).getAuthorityId());
+        if(administratorAuthority.getManageGuide()){
+            List<ManagerOrderDTO> managerOrderDTOS = new ArrayList<>();
+            for(TheOrder o:theOrderService.findByParams(new TheOrder(guideId))){
+                Route r = routeService.get(o.getRouteId());
+                managerOrderDTOS.add(new ManagerOrderDTO(o.getId(),r.getLine(),o.getTName(),MyMathUtil.getTime(o.getTime(),r.getRDay())));
+            }
+            return ResultUtil.Success(managerOrderDTOS);
+        }else{
+            return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
+        }
+    }
     /**
      * 通过认证
      * @param administratorId
@@ -371,5 +429,83 @@ public class ManagerController {
     }
 
 
+    /**
+     * 获取管理员账户
+     * @param administratorId
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getAdministrators")
+    @ApiOperation("获取管理员账户")
+    public ResultDTO getAdministrators(Integer administratorId)throws Exception{
+        AdministratorType administratorType = administratorTypeService.get(
+                administratorService.get(administratorId).getTypeId());
+        AdministratorAuthority administratorAuthority =
+                administratorAuthorityService.get(administratorType.getAuthorityId());
+        if(administratorAuthority.getAddAdministrator()){
+            return ResultUtil.Success(administratorService.findAll());
+        }else if(administratorAuthority.getAddChildAdmistrator() && administratorType.getId() == 2){
+            return ResultUtil.Success(administratorService.findByParams(new Administrator(3)));
+        }else if(administratorAuthority.getAddChildAdmistrator() && administratorType.getId() == 4){
+            return ResultUtil.Success(administratorService.findByParams(new Administrator(5)));
+        }else {
+            return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
+        }
+    }
+
+
+    /**
+     * 搜素管理员账户
+     * @param administratorId
+     * @param administratorTypeId
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/findAdministrator")
+    @ApiOperation("搜素管理员账户")
+    public ResultDTO findAdministrator(Integer administratorId,Integer administratorTypeId)throws Exception{
+        AdministratorType administratorType = administratorTypeService.get(
+                administratorService.get(administratorId).getTypeId());
+        AdministratorAuthority administratorAuthority =
+                administratorAuthorityService.get(administratorType.getAuthorityId());
+        if(administratorAuthority.getAddAdministrator()){
+            return ResultUtil.Success(administratorService.findByParams(new Administrator(administratorTypeId)));
+        }else if(administratorAuthority.getAddChildAdmistrator() && administratorType.getId() == 2){
+            if(administratorTypeId == 3){
+                return ResultUtil.Success(administratorService.findByParams(new Administrator(administratorTypeId)));
+               }else {
+                return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
+            }
+        }else if(administratorAuthority.getAddChildAdmistrator() && administratorType.getId() == 4){
+            if(administratorTypeId == 5){
+                return ResultUtil.Success(administratorService.findByParams(new Administrator(administratorTypeId)));
+            }else {
+                return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
+            }
+        }else {
+            return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
+        }
+    }
+
+    /**
+     * 发送通告
+     * @param administratorId
+     * @param touristId
+     * @param msg
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/informMsg")
+    @ApiOperation("发送通告")
+    public ResultDTO informMsg(Integer administratorId,Long touristId,String msg)throws Exception{
+        AdministratorAuthority administratorAuthority = administratorAuthorityService.get(
+                administratorTypeService.get(
+                        administratorService.get(administratorId).getTypeId()).getAuthorityId());
+        if(administratorAuthority.getInform()){
+            return ResultUtil.Success(messageService.save(new Message(touristId,msg)));
+        }else {
+            return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
+        }
+    }
 
 }

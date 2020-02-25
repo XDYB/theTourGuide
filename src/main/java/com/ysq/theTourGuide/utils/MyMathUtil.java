@@ -3,6 +3,7 @@ package com.ysq.theTourGuide.utils;
 
 import org.springframework.data.geo.Point;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,5 +45,14 @@ public class MyMathUtil {
             }
         }
         return dates;
+    }
+
+    public static String getTime(Date time,Integer l){
+        Calendar c = Calendar.getInstance();
+        c.setTime(time);
+        c.add(Calendar.DAY_OF_MONTH,l);
+        Date lastDay = c.getTime();
+        DateFormat df = DateFormat.getDateInstance();
+        return df.format(time) + " - "  + df.format(lastDay);
     }
 }
