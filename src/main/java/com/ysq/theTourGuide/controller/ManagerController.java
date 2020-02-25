@@ -3,6 +3,7 @@ package com.ysq.theTourGuide.controller;
 import com.ysq.theTourGuide.base.dto.ResultDTO;
 import com.ysq.theTourGuide.base.util.ResultUtil;
 import com.ysq.theTourGuide.config.ErrorCode;
+import com.ysq.theTourGuide.dto.AdministratorDTO;
 import com.ysq.theTourGuide.dto.ManagerOrderDTO;
 import com.ysq.theTourGuide.entity.*;
 import com.ysq.theTourGuide.service.*;
@@ -442,12 +443,22 @@ public class ManagerController {
                 administratorService.get(administratorId).getTypeId());
         AdministratorAuthority administratorAuthority =
                 administratorAuthorityService.get(administratorType.getAuthorityId());
+        List<AdministratorDTO> list = new ArrayList<>();
         if(administratorAuthority.getAddAdministrator()){
-            return ResultUtil.Success(administratorService.findAll());
+            for (Administrator a:administratorService.findAll()){
+                list.add(new AdministratorDTO(a,administratorTypeService.get(a.getTypeId()).getTypeName()));
+            }
+            return ResultUtil.Success(list);
         }else if(administratorAuthority.getAddChildAdmistrator() && administratorType.getId() == 2){
-            return ResultUtil.Success(administratorService.findByParams(new Administrator(3)));
+            for(Administrator a:administratorService.findByParams(new Administrator(3))){
+                list.add(new AdministratorDTO(a,administratorTypeService.get(a.getTypeId()).getTypeName()));
+            }
+            return ResultUtil.Success(list);
         }else if(administratorAuthority.getAddChildAdmistrator() && administratorType.getId() == 4){
-            return ResultUtil.Success(administratorService.findByParams(new Administrator(5)));
+            for(Administrator a:administratorService.findByParams(new Administrator(5))){
+                list.add(new AdministratorDTO(a,administratorTypeService.get(a.getTypeId()).getTypeName()));
+            }
+            return ResultUtil.Success(list);
         }else {
             return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
         }
@@ -468,17 +479,27 @@ public class ManagerController {
                 administratorService.get(administratorId).getTypeId());
         AdministratorAuthority administratorAuthority =
                 administratorAuthorityService.get(administratorType.getAuthorityId());
+        List<AdministratorDTO> list = new ArrayList<>();
         if(administratorAuthority.getAddAdministrator()){
-            return ResultUtil.Success(administratorService.findByParams(new Administrator(administratorTypeId)));
+            for(Administrator a:administratorService.findByParams(new Administrator(administratorTypeId))){
+                list.add(new AdministratorDTO(a,administratorTypeService.get(a.getTypeId()).getTypeName()));
+            }
+            return ResultUtil.Success(list);
         }else if(administratorAuthority.getAddChildAdmistrator() && administratorType.getId() == 2){
             if(administratorTypeId == 3){
-                return ResultUtil.Success(administratorService.findByParams(new Administrator(administratorTypeId)));
+                for(Administrator a:administratorService.findByParams(new Administrator(administratorTypeId))){
+                    list.add(new AdministratorDTO(a,administratorTypeService.get(a.getTypeId()).getTypeName()));
+                }
+                return ResultUtil.Success(list);
                }else {
                 return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
             }
         }else if(administratorAuthority.getAddChildAdmistrator() && administratorType.getId() == 4){
             if(administratorTypeId == 5){
-                return ResultUtil.Success(administratorService.findByParams(new Administrator(administratorTypeId)));
+                for(Administrator a:administratorService.findByParams(new Administrator(administratorTypeId))){
+                    list.add(new AdministratorDTO(a,administratorTypeService.get(a.getTypeId()).getTypeName()));
+                }
+                return ResultUtil.Success(list);
             }else {
                 return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
             }
