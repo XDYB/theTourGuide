@@ -17,8 +17,8 @@
     <result column="grade" property="grade" jdbcType="DOUBLE" />
     <result column="years" property="years" jdbcType="VARCHAR" />
     <result column="like_nums" property="likeNums" jdbcType="INTEGER" />
-    <result column="price" property="price" jdbcType="INTEGER" />
-    <result column="fans_nums" property="fansNums" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="INTEGER" />
+    <result column="g_language" property="gLanguage" jdbcType="INTEGER" />
     <result column="state" property="state" jdbcType="INTEGER" />
   </resultMap>
 </mapper>

@@ -219,6 +219,7 @@ public class ManagerController {
      * @throws Exception
      */
     @GetMapping("/getGuideing")
+    @ApiOperation("获取申请的导游信息")
     public ResultDTO getGuideing(Integer administratorId)throws Exception{
         AdministratorAuthority administratorAuthority = administratorAuthorityService.get(
                 administratorTypeService.get(
@@ -267,6 +268,7 @@ public class ManagerController {
      * @throws Exception
      */
     @GetMapping("/getGuide")
+    @ApiOperation("获取所有通过导游信息")
     public ResultDTO getGuide(Integer administratorId)throws Exception{
         AdministratorAuthority administratorAuthority = administratorAuthorityService.get(
                 administratorTypeService.get(

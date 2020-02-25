@@ -86,8 +86,8 @@ public class Guide {
     /**
      * 粉丝数
      */
-    @Column(name = "fans_nums")
-    private Integer fansNums;
+    @Column(name = "g_language")
+    private String gLanguage;
 
     /**
      * 状态（0为待审核，1通过，2不通过）
@@ -122,8 +122,6 @@ public class Guide {
 
     public static final String TIME = "time";
 
-    public static final String FANS_NUMS = "fansNums";
-
     public static final String STATE = "state";
 
     public Guide(Long touristId){
@@ -145,7 +143,7 @@ public class Guide {
         this.theGuideNumber = g.getGuide_number();
         this.organization = g.getOrganization();
         this.date = g.getDate();
-        this.fansNums = 0;
+        this.gLanguage = g.getLanguage();
         this.likeNums = 0;
         this.grade = 0.00;
         this.years = "0";
