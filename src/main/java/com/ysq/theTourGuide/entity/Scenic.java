@@ -81,6 +81,12 @@ public class Scenic {
     @Column(name = "pic_url")
     private String picUrl;
 
+    @Column(name = "pic_url_2")
+    private String picUrl2;
+
+    @Column(name = "pic_url_3")
+    private String picUrl3;
+
     public static final String ID = "id";
 
     public static final String NAME = "name";
@@ -106,6 +112,10 @@ public class Scenic {
     public static final String ADMINISTRATOR_ID = "administratorId";
 
     public static final String PIC_URL = "picUrl";
+
+    public static final String PIC_URL_2 = "picUrl2";
+
+    public static final String PIC_URL_3 = "picUrl3";
 
     public Scenic(String city){
         this.city = city;

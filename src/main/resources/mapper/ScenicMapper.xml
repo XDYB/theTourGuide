@@ -18,6 +18,8 @@
     <result column="warm_tip" jdbcType="VARCHAR" property="warmTip" />
     <result column="administrator_id" jdbcType="INTEGER" property="administratorId" />
     <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
+    <result column="pic_url_2" jdbcType="VARCHAR" property="picUrl2" />
+    <result column="pic_url_3" jdbcType="VARCHAR" property="picUrl3" />
   </resultMap>
 
 
