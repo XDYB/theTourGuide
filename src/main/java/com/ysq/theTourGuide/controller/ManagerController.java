@@ -405,7 +405,8 @@ public class ManagerController {
                 administratorTypeService.get(
                         administratorService.get(administratorId).getTypeId()).getAuthorityId());
         if(administratorAuthority.getManageOrder()){
-            if(theOrderService.get(orderId)!=null) {
+            TheOrder theOrder = theOrderService.get(orderId);
+            if(theOrder != null && theOrder.getState() == "222") {
                 TheOrder t = new TheOrder();
                 t.setId(orderId);
                 t.setState("333");
