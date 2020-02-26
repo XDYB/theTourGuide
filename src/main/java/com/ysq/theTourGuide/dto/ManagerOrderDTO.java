@@ -13,5 +13,6 @@ public class ManagerOrderDTO {
     private String line;
     private String touristName;
     private String time;
+    private String state;
 
 }

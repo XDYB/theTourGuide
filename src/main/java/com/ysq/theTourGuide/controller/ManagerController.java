@@ -383,13 +383,42 @@ public class ManagerController {
             List<ManagerOrderDTO> managerOrderDTOS = new ArrayList<>();
             for(TheOrder o:theOrderService.findByParams(new TheOrder(guideId))){
                 Route r = routeService.get(o.getRouteId());
-                managerOrderDTOS.add(new ManagerOrderDTO(o.getId(),r.getLine(),o.getTName(),MyMathUtil.getTime(o.getTime(),r.getRDay())));
+                managerOrderDTOS.add(new ManagerOrderDTO(o.getId(),r.getLine(),o.getTName(),MyMathUtil.getTime(o.getTime(),r.getRDay()),o.getState()));
             }
             return ResultUtil.Success(managerOrderDTOS);
         }else{
             return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
         }
     }
+
+    /**
+     * 取消订单
+     * @param administratorId
+     * @param orderId
+     * @return
+     * @throws Exception
+     */
+    @DeleteMapping("/cancleOrder")
+    @ApiOperation("取消订单")
+    public ResultDTO cancleOrder(Integer administratorId,Long orderId) throws Exception{
+        AdministratorAuthority administratorAuthority = administratorAuthorityService.get(
+                administratorTypeService.get(
+                        administratorService.get(administratorId).getTypeId()).getAuthorityId());
+        if(administratorAuthority.getManageOrder()){
+            if(theOrderService.get(orderId)!=null) {
+                TheOrder t = new TheOrder();
+                t.setId(orderId);
+                t.setState("333");
+                theOrderService.update(t);
+                return ResultUtil.Success();
+            }else{
+                return ResultUtil.Error(ErrorCode.NOEXIST);
+            }
+        }else{
+            return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
+        }
+    }
+
     /**
      * 通过认证
      * @param administratorId
