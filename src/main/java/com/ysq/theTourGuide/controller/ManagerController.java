@@ -596,7 +596,7 @@ public class ManagerController {
                 administratorTypeService.get(
                         administratorService.get(administratorId).getTypeId()).getAuthorityId());
         if(administratorAuthority.getManageGuide()){
-            guideService.deleteById(guideId);
+            guideService.update(new Guide(guideId,2));
             return ResultUtil.Success();
         }else {
             return ResultUtil.Error(ErrorCode.LIMITED_AUTHORITY);
